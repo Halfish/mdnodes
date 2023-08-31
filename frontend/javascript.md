@@ -1,4 +1,15 @@
 
+## 模块（Module）
+
+语法
+- `require/exports`
+    - 是 CommonJS 引入的语法。
+    - 现在的浏览器不支持，只有 Node.js 支持，一般在服务端使用；
+    - 运行时动态加载
+- `import/export`
+    - 是 ES6 引入的语法
+    - 静态编译
+
 ## Ajax
 Ajax, AJAX = Asynchronous JavaScript and XML（异步的 JavaScript 和 XML）。
 

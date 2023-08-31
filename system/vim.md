@@ -51,10 +51,10 @@ set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
 
-" 设置备份文件、交换文件、操作历史文件的保存位置
-set backupdir=~/.vim/.backup//
-set directory=~/.vim/.swap//
-set undodir=~/.vim/.undo//
+" 设置备份文件、交换文件、操作历史文件的保存位置（需要先创建文件夹）
+"set backupdir=~/.vim/.backup//
+"set directory=~/.vim/.swap//
+"set undodir=~/.vim/.undo//
 
 " 如果行尾有多余的空格（包括 Tab 键），该配置将让这些空格显示成可见的小方块
 set list
@@ -83,6 +83,7 @@ set laststatus=2
 set statusline=%{fnamemodify(resolve(expand('%:p')),':~')}\ %*
 
 " Vundle 插件
+" 需要先安装 Vundle，git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 set nocompatible              " be iMproved, required
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
