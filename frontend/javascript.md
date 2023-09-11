@@ -64,3 +64,38 @@ new Promise(function (resolve, reject) {
     // 一定会执行
 );
 ```
+
+## ArrayBuffer 和 Uint8Array
+
+`ArrayBuffer` 是用来存储二进制数据的，`Uint8Array` 这是读取二进制数据的一种视图，即每个字节都会被转成一个数字，范围是 0~255；
+
+构造 ArrayBuffer / Uint8Array
+```js
+// 构造 Uint8Array，大于 255 的，高位 bit 会被忽略
+const array = new Uint8Array([3, 255, 16, 256]); // 3, 255, 16, 0
+
+// 构造 ArrayBuffer
+const buf = new ArrayBuffer(3); // 3个字节
+```
+
+转换方法如下：
+```js
+// ArrayBuffer to Uint8Array
+const buffer = new ArrayBuffer(3);
+const array = new Uint8Array(ab, 0, 3)
+
+// Uint8Array -> ArrayBuffer
+const array = new Uint8Array([3, 255, 16]);
+const buffer = array.buffer;
+```
+
+和字符串的转换
+```js
+// Uint8Array/ArrayBuffer -> String
+const decoder = new TextDecoder('utf-8');
+const str = decoder.decode(input)
+
+// String -> Uint8Array
+const encoder = new TextEncoder();
+const array = encoder.encode(str)
+```
