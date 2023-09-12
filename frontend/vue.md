@@ -1,4 +1,16 @@
 
+vue 精通
+https://vue3js.cn/interview/
+
+vue 命名规范:
+- 官方文档：https://vuejs.org/style-guide/
+
+大小写
+- 组件名用 `PascalCase`，如 `ActionButton.vue`，以区分原始的 HTML 标签。
+- 组件名避免用单个单词，要用多个单词，以防和 HTML 原生标签冲突。
+- 如果组件在 DOM 中使用，得用 `kebab-case` 命名风格，如 `<action-button></action-button>`
+- 组件的属性名用 `Camel-Case`，
+
 
 ## 一、创建 App
 
@@ -117,6 +129,9 @@ onMounted(() => {
 <!-- 用 @ 简写 -->
 <a @click="doSomething></a>
 ```
+
+事件传递
+- [DOM 的事件传送机制：捕获与冒泡](https://tie.pub/2019/10/dom-event-capture-and-propagation/)
 
 ## 四、响应式基础（Reactivity Fundamentals）
 声明响应式状态
