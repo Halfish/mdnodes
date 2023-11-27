@@ -84,3 +84,10 @@ box {
   gap: 10px;  /* 格子的间距 */
 }
 ```
+
+position:
+- static
+- relative
+- fixed
+- absolute
+- sticky

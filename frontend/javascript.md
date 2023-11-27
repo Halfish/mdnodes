@@ -99,3 +99,23 @@ const str = decoder.decode(input)
 const encoder = new TextEncoder();
 const array = encoder.encode(str)
 ```
+
+# Passive 的问题
+https://blog.csdn.net/weixin_44514894/article/details/116088933
+
+如果 touch start/move 没有加上 `passive: true`，会有如下提醒，想让你加上。
+```
+[Violation] Added non-passive event listener to a scroll-blocking <某些> 事件. Consider marking event handler as 'passive' to make the page more responsive. See <URL>
+```
+加上以后，浏览器就不会有默认行为，会提升scroll的体验。
+```
+window.addEventListener('touchmove', func, {passive: true});
+```
+后者直接用库 `default-passive-events`，放在 main.js 里即可。
+
+
+经过上面的操作，浏览器的默认行为触发不了了，每次 touchmove 想去触发默认行为，但是会失败，所以会有下面的报错：
+```
+Unable to preventDefault inside passive event listener invocation
+```
+所以要想办法取消默认行为，反正我们也不想响应。
