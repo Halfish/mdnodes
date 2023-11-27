@@ -33,11 +33,18 @@ float 浮动布局
 - right 放在右边，同上。
 
 position 指定元素在文档中的位置
-- static; 默认，啥都不做
+- static; 默认，啥都不做，根据页面的正常流进行定位。
 - relative 相对布局；先放在正常的位置，然后相对做一些偏移
-- absolute; 绝对布局；元素会被移出正常文档流，并不为元素预留空间
+- absolute; 绝对布局；元素会被移出正常文档流，并不为元素预留空间。根据最近的祖先元素进行定位；如果没有祖先，会根据 body 定位，并滚动。
 - fixed; 固定布局；元素会被移出正常文档流，并不为元素预留空间；屏幕滚动时不会变；
 - sticky; 现根据正常文档流一起定位，然后跟着最近的滚动祖先一起滚动。
+
+overflow:
+- visible: 默认值，内容不能被裁减并且可能渲染到边距盒（padding）的外部。
+- hidden: 超过 padding 会被裁剪，不提供滚动条。
+- clip: 类似 hidden，但是会禁止编程的方式滚动。
+- scroll: 滚动
+- auto: 滚动，但是自动隐藏滚动条
 
 ### Flex, Flexible Box Layout Module，弹性盒子布局
 
@@ -85,9 +92,3 @@ box {
 }
 ```
 
-position:
-- static
-- relative
-- fixed
-- absolute
-- sticky
