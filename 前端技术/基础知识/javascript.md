@@ -3,7 +3,7 @@
 
 语法
 - `require/exports`
-    - 是 CommonJS 引入的语法。
+    - 是 CommonJS 引入的语法。属于社区的模块化规范。
     - 现在的浏览器不支持，只有 Node.js 支持，一般在服务端使用；
     - 运行时动态加载
 - `import/export`
@@ -15,8 +15,7 @@ Ajax, AJAX = Asynchronous JavaScript and XML（异步的 JavaScript 和 XML）�
 
 AJAX 不是新的编程语言，而是一种使用现有标准的新方法。
 
-AJAX 最大的优点是在不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容。
-
+AJAX 最大的优点是在不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容。缺点是如果请求之间有依赖关系的话，会出现回调地狱。
 
 XMLHttpRequest 对象用于和服务器交换数据。
 
@@ -41,6 +40,23 @@ jQuery.getJSON(url, data, success(data, status ,xhr))
 
 ```
 
+jQuery 也对 Ajax 进行了封装，
+```js
+$.ajax({
+   type: 'POST',
+   url: url,
+   data: data,
+   dataType: dataType,
+   success: function () {},
+   error: function () {}
+});
+```
+
+jQuery Ajax 的缺点是：
+- 本身是针对MVC的编程,不符合现在前端MVVM的浪潮
+- 基于原生的XHR开发，XHR本身的架构不清晰。
+- 为了用 Ajax 而引用整个 jQuery，有点浪费。jQuery太大了。
+
 ## JavaScript Promise
 Javascript Promise 是 ES6 新增的一个类，目的是更加优雅的书写复杂的异步任务。
 
@@ -53,7 +69,7 @@ Promise 可以很方便的处理多个异步任务。有三个函数：
 new Promise(function (resolve, reject) {
     // 要做的事情...
     const result = 'Hello';
-    relove('success');      // 表示正常
+    resolve('success');      // 表示正常
     // reject('failed');    // 表示失败了
     return result;
 }).then(result => {
@@ -64,6 +80,49 @@ new Promise(function (resolve, reject) {
     // 一定会执行
 );
 ```
+
+## axios
+Vue2.0之后，尤雨溪推荐大家用 axios 替换 JQuery ajax，想必让 axios 进入了很多人的目光中。
+
+axios 官网讲的挺详细的。参考 [axios-http](https://axios-http.com/zh/docs/intro).
+
+```js
+axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+    }
+})
+.then(function (response) {
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
+});
+```
+
+## fetch
+```js
+try {
+  let response = await fetch(url);
+  let data = response.json();
+  console.log(data);
+} catch(e) {
+  console.log("Oops, error", e);
+}
+```
+fetch号称是AJAX的替代品，是在ES6出现的，使用了ES6中的promise对象。Fetch是基于promise设计的。
+
+Fetch的代码结构比起ajax简单多了，参数有点像jQuery ajax。
+
+但是，一定记住fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。
+
+fetch 的缺点：
+- fetch只对网络请求报错，对400，500都当做成功的请求，服务器返回 400，500 错误码时并不会 reject
+- 只有网络错误这些导致请求不能完成时，fetch 才会被 reject。
+- fetch默认不会带cookie，需要添加配置项： fetch(url, {credentials: 'include'})
 
 ## ArrayBuffer 和 Uint8Array
 

@@ -54,7 +54,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 ```
 
-
 ### Router Component
 下面这几个是 Router Component，不支持 data API，不推荐用。
 - `<BrowserRouter>`

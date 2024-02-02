@@ -28,6 +28,19 @@ JSX 可以结合 html 标签和 js 代码。
 ### Element
 和 Flutter 有点像，element 是实际要渲染的 DOM 的抽象。React element 使用 objects 描述的，创建起来比较简单。
 
+### React 组件的生命周期
+组件的[生命周期](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)主要分三步：
+1. 挂载（Mount）
+  - 组件完全挂载在网页中，会调用 `compoentDidMount` 函数。
+  - 组件的渲染并且构造 DOM 元素插入到页面的过程称为组件的装载。
+  - 装载阶段执行的函数会在组件实例被创建和插入 DOM 中时被触发，这个过程主要实现组件状态的初始化。
+2. 更新（Update）
+  - 属性（Props）或状态（State）的改变会触发一次更新阶段，但是组件未必会重新渲染，这取决于 shouldComponentUpdate。
+  - 每次组件因为 state 和 props 变化而更新时，在重新渲染前该生命周期函数都会触发 `shouldComoponentUpdate`，常用语性能的调优。
+  - 调用 `componentDidUpdate]` 函数。
+3. 卸载（Unmount）
+  - 调用 `componentWillUnmound` 函数。
+
 ### 多平台
 支持桌面端和移动端。
 
