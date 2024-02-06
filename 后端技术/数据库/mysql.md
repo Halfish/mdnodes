@@ -111,3 +111,16 @@ purge master logs before '2022-02-22 00:00:00';
 # 删除指定日志文件
 purge master logs to 'master.000001';
 ```
+
+### GTID
+博客链接
+- [深入理解 MySQL 5.7 GTID 系列（一）](https://cloud.tencent.com/developer/article/1395925)
+- [深入理解MySQL 5.7 GTID系列（二）：GTID相关内部数据结构](https://cloud.tencent.com/developer/article/1396288)
+
+MySQL GTID是 5.6 版本加入的一个强大的特性。
+
+Mysql GTID 全称为Global Transaction Identifie，在整个复制的过程中完全唯一。即主从数据库中数据迁移时，这个值始终是一样的。
+
+全局变量
+- `GTID_EXECUTED` 已经执行的 GTID 集合；
+- `GTID_PURGED` 已经清楚的 GTID 集合；

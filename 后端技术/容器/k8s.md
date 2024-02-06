@@ -1,6 +1,16 @@
 
+官方主页：https://kubernetes.io/
 
-### Deployment
+Kubernetes, k8s, 是一个便捷的，可扩展的开源平台，用来管理容器化的工作负荷和服务。中间的 8 表示省略的字母的数量
+
+工具：
+- kubectl，Kubernetes command-line tool，用来管理 k8s 集群。
+- 文档：https://kubectl.docs.kubernetes.io/references/kubectl/
+- 文档：https://kubernetes.io/docs/reference/kubectl/overview/
+
+运维一般有三种运行应用的模式，第一种是运行在物理机上。第二种是用虚拟机；第三种是容器，比虚拟机更加轻量。k8s是管理容器的工具。
+
+### 1. Deployment
 kill pod
 ```
 kubectl scale deployment project-caocao-cron --context=ali-cn-shenzhen --namespace=fleet-service-staging --replicas 0
@@ -8,7 +18,9 @@ kubectl scale deployment project-caocao-cron --context=ali-cn-shenzhen --namespa
 kubectl delete deployment project-caocao-cron --context=ali-cn-shenzhen --namespace=fleet-service-staging
 ```
 
-### Pod
+### 2. Service
+
+### 3. Pod
 
 ```bash
 # 根据 yaml 部署 Deployment
@@ -22,7 +34,7 @@ kubectl delete pod --context=gz --namespace=fleet-service-dev --field-selector=s
 
 ```
 
-### Secret
+### 4. Secret
 
 创建 secret
 ```
@@ -55,3 +67,6 @@ echo 'UyFCXCpkJHpEc2I9' | base64 --decode
 # 合并上面两步
 kubectl get secret db-user-pass -o jsonpath='{.data.password}' | base64 --decode
 ```
+
+### 5. Ingress
+Ingress 用来通信
