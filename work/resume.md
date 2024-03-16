@@ -1,27 +1,39 @@
 PonyPilot+ APP
 - 项目背景
-    - PonyPilot+ 是小马智行自动驾驶出行服务的App。:w
+    - PonyPilot+ 是小马智行研发的基于flutter框架的出行软件，是自动驾驶车队对外运营 Robotaxi 服务的对外平台。
 - 工作内容
     - 积分商城
-        - App, backend, Admin
-        - 商品兑换和购买
+        - 独自开发和上线了积分商城系统的全部功能，主要包括积分任务的设计，商品的兑换流程，积分的管理等。
+        - 项目主要包括后台数据库表设计以及flask接口功能实现，App内积分商城flutter页面的实现，以及基于React的管理页面。
     - PonyPilot+ H5 版本
-        - 订单流程，站点搜索，地图，支付页
+        - 实现了包含基础功能的H5版本PonyPilot+，包括地图组件、站点搜索、完整的订单流程、以及支付功能等。
+        - 项目基于 uniapp 开发，底层是 Vue 框架，通过WebView的方式用于嵌入到第三方App和微信公众号里。
     - RA-Client Robotaxi Widget
-        - 订单信息，发送命令
+        - RA-Client 是远程操作员管理车辆和订单的工具，底层用的C++ GUI开发，我主要负责和Robotaxi相关的Widget功能开发和维护。
+        - Robotaxi Widget 主要支持显示订单和乘客信息，接入云呼平台和乘客联系，以及发送订单控制指令。
 
-Robotaxi后端管理系统
+Fleet-Control-Center 后端管理系统
 - 项目背景
-    - Robotaxi是PonyPilot+ App的后台管理系统。
+    - FCC是PonyPilot+ App背后的，基于 python flask 框架开发的后端管理系统。
 - 工作内容
-    - 企业支付
-        - 后台，管理系统，admin
     - 虚拟派单优化
-        - 虚拟单 & 跨区域单 & 调度单
+        - 普通虚拟单：重构和优化后台虚拟单生成的定时脚本，设计可配置的虚拟单生成流程，为不同业务类型的车辆生成对应的虚拟单。
+        - 跨区域单：通过跨区域单，动态调度多个运营区域内的车辆数量到预设的比例。
+        - 高峰期调度单：通过历史数据，提前调度空余的车辆到高峰期繁忙的站点，减轻运营压力。
     - 自动驾驶成就
-        - 排行榜
-        - 引入 Kafka
-        - onboard
+        - 后台根据onboard车辆状态数据和订单信息，生成行程的一些自动驾驶成就数据，如通过红绿灯的个数和跨越障碍物的次数等。
+        - 给用户累计里程生成排行榜，后端采用 redis zset 实现。
+    - 企业支付
+        - 
     - 接入曹操出行平台
-        - 转发
+        - 转发 TNC
 
+
+flutter + android + java
+python + flask + kafka + sqlachemy + bazel + k8s + docker + git + jenkins + argo
+c++ protobuf
+redis
+vue + uniapp 跨域的问题，cookie
+react (js + css + webpack + npm)
+
+难点：业务驱动，弱化技术背景，目标导向。
