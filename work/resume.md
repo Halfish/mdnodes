@@ -25,19 +25,26 @@ Fleet-Control-Center 后端管理系统
         - 给用户累计里程生成排行榜，后端采用 redis zset 实现。
     3. 企业支付
         - 支持企业员工打车，后台记录所有企业订单，定期和企业对账。
-        - 开发基于React框架的后台管理系统，用 k8s 部署到集群。
+        - 开发基于Material-UI 和 React框架的后台管理系统，用 k8s 部署到集群。
     4. 曹操出行
         - 支持在曹操出行 App 接入 Pony Robotaxi 服务。
         - 负责开发单独的 Agent 服务。通过桥接 Onboard ODP 模块和曹操出行后端服务，同步站点、订单、车辆等信息。
 
+## 个人技能
+个人技能
+- 熟悉基于python的后端开发框架，如 flask，sqlalchemy, alembic, gunicorn, rq(Redis Queue), protobuf, grpc 等
+- 熟悉前端web框架，如react，vue & uniapp，以及相关的项目开发工具，如 webpack, nodejs 等。有多个前端项目的开发经验。
+- 熟悉移动端开发框架，开发过Android，flutter框架
+- 熟悉 MySQL & NoSQL，了解 索引 & 事务，分布式
+- 熟悉 kafka, 消息队列 了解分布式
+- 熟悉 k8s, docker, jenkins, argo 等 DevOps 工具。
+- 熟悉 Linux, bash, git, bazel, protobuf 开发工具链
+- 熟悉 C++，了解 STL ，了解链接编译的基本原理。
 
-flutter + android + java
-python + flask + kafka + sqlachemy + bazel + k8s + docker + git + jenkins + argo
-c++ protobuf
-redis
-vue + uniapp 跨域的问题，cookie
-react (js + css + webpack + npm)
 
-挑战：业务驱动，弱化技术背景，目标导向。（解决方法：不要太深入某个技术，还是已解决问题为主。）
+挑战
+- 业务驱动，弱化技术背景，目标导向。（解决方法：不要太深入某个技术，还是已解决问题为主。）
+- 全栈，快速掌握一个方向的技能，并产出结果。如支持RO拨打电话（RA-Client C++，接入阿里云&火山引擎，flask接口，飞连登录，js前端）。
+
 
 github link
