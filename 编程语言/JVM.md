@@ -4,6 +4,7 @@
 - [Java Garbage Collection Basics](https://www.oracle.com/webfolder/technetwork/Tutorials/obe/java/gc01/index.html)
 - [HotSpot Virtual Machine Garbage Collection Tuning Guide](https://docs.oracle.com/en/java/javase/17/gctuning/)
 - [Tuning Garbage Collection with the 5.0 Java™ Virtual Machine](https://www.oracle.com/java/technologies/tuning-garbage-collection-v50-java-virtual-machine.html)
+- [面试官：如何进行 JVM 调优（附真实案例）](https://zhuanlan.zhihu.com/p/488615913)
 
 ## JDK, JRE, JVM
 JDK > JRE > JVM
@@ -50,13 +51,60 @@ JVM 主要包含
     - 主垃圾回收也会触发 `Stop the World Event`事件。
     - 主垃圾回收会更加耗时，因为需要处理所有的活跃对象（为了避免内存碎片，需要把活跃对象全部压缩到一起）
 3. Permanent Generation
-    - 主要用存放Java运行时需要的一些类和方法。
+    - 主要用存放Java运行时需要的一些class、字符串常量等。
     - 在 `full garbage collection` 过程中会被回收内存。
+    - Java 8 之后移除了，用元空间替代。
+4. Metaspace
+    - 替代 Permanent Generation
+    - 和 Java 对象的堆内存的隔离的，不会有内存溢出的问题。（除非机器内存满了）
+
+垃圾回收的主要过程如下：
+1. 首先，新的对象分配在 Eden 内存中，清空 survivor 区域的内存。
+2. Eden区域满了之后，次级垃圾回收（minor GC）会被执行。
+3. 活跃的对象会被移到 S0 区域，不活跃的对象会被删掉。
+4. 同理，Eden区域满了之后，会执行minor GC，把不活跃的对象删掉，活跃的对象挪到S1；同时S0里活跃的对象age+1，不活跃的删掉。此时S0清空了。
+5. 下一次minor GC，Eden里活跃的对象挪到S0，清空S1；这样循环下去。
+6. 当 survivor 区域的对象age到了阈值，就会把这部分对象挪到tunured区域。
+7. 随着minor GC的执行，不断有对象挪到tunured区域，称作promoted。
+8. 最终，tenured区域满了，会触发一次major GC；
 
 
+### Java Garbage Collector
+GC 相关的参数：
+- `-Xms`，JVM启动时，初始的 heap 大小。
+- `-Xmx` 最大的堆大小
+- `-Xmn` 年轻代的堆的大小
+- `-XX:PermSize` Permanent Generation 的堆大小。
+- `-XX:MaxPermSize` 最大的 Permanent Generation 的堆大小。
+
+Serial GC
+- `-XX:+UseSerialGC`  默认用单核的CPU；
+
+Parallel GC
+- `-XX:ParallelGCThreads=<desired number>` 可以设置 Parallel GC 的线程数量。注意只影响 Young Generation 的并行数。
+- `-XX:+UseParallelGC` 使用并行GC；
+- `-XX:+UseParallelOldGC ` 这里 Old Generation 也是用并行的GC；
+
+CMS Collector
+- Concurrent Mark Sweep (CMS) Collector
+- 这个 collector 不移动活跃的对象，如果内存碎片是个问题，就会重新申请一个大的 heap；
+- `-XX:+UseConcMarkSweepGC`
+- `-XX:ParallelCMSThreads=<n>`
+
+The G1 Garbage Collector
+- 又叫做 The Garbage First garbage collector，用来替代 CMS collector
+- `-XX:+UseG1GC`
+
+并发（concurency）是一个人吃三个馒头，并行（parallel）是三个人吃三个馒头。
 
 ## JVM 性能调优
 性能调优有两个目标
 - responsiveness 及时响应
 - throughput 吞吐量
 
+可以从下面几个方向做性能调优：
+1. 调整堆的大小
+2. 选择不同的垃圾回收器
+3. 调整并发线程数
+4. 调整内存区域划分的比例，如新生代和老年代的比例。
+5. 监控和调优工具，如 `jmap, jstack, jstat`
