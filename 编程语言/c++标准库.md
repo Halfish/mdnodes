@@ -352,32 +352,33 @@ double atof (const char* str);
 
 流的随机访问
 
-    主要是 seek 和 tell 函数，且主要用在文件流中
-    - seek 会把流重定位到指定的位置，tell 会告诉我们流的当前位置（从文件头开始算的字节数）
-        - TELLQ 和 TELLG 分别是告诉我们输入流和输出流的位置，SEEKQ 和 SEEKG 同理。
-        - 我一般 tellg 和 - seekg 用的多。
-    - seek 有两个重载的函数
-        - seekg(streampos pos);     // 这里的 pos 是流的绝对地址
-        - seekg(streamoff off, ios_base::seekdir way);
-            - 这里的 off 是偏移量，way 是起始位置。
-            - way 可以是下面三种取值之一：ios::beg, ios::end, ios::cur
+主要是 seek 和 tell 函数，且主要用在文件流中
+- seek 会把流重定位到指定的位置，tell 会告诉我们流的当前位置（从文件头开始算的字节数）
+    - TELLQ 和 TELLG 分别是告诉我们输入流和输出流的位置，SEEKQ 和 SEEKG 同理。
+    - 我一般 tellg 和 - seekg 用的多。
+- seek 有两个重载的函数
+    - seekg(streampos pos);     // 这里的 pos 是流的绝对地址
+    - seekg(streamoff off, ios_base::seekdir way);
+        - 这里的 off 是偏移量，way 是起始位置。
+        - way 可以是下面三种取值之一：ios::beg, ios::end, ios::cur
 
-    读文件示例
-    ```c++
-    #include <iostream>     // for std
-    #include <fstream>      // for ifstream
+读文件示例
+```c++
+#include <iostream>     // for std
+#include <fstream>      // for ifstream
 
-    int main(){
-        std::ifstream infile;
-        infile.open("query.txt.gbk", std::ios::in);
-        std::string query;
-        while (!infile.eof()) {
-            std::getline(infile, query, '\n');
-            std::cout << query.length() << std::endl;
-            std::cout << query << std::endl;
-        }
-        return 0;
+int main(){
+    std::ifstream infile;
+    infile.open("query.txt.gbk", std::ios::in);
+    std::string query;
+    while (!infile.eof()) {
+        std::getline(infile, query, '\n');
+        std::cout << query.length() << std::endl;
+        std::cout << query << std::endl;
     }
+    return 0;
+}
+```
 
 写文件示例
 

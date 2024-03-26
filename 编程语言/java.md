@@ -1,5 +1,6 @@
 # Java
-
+参考：
+- [Java Guide](https://javaguide.cn/)
 
 ## Java 历史
 时间线
@@ -65,7 +66,8 @@ class version
 
 ## Java 核心类
 核心类
-- `String` 字符串
+- `String` 字符串，是不可变的，是常量，线程安全的。
+- `StringBuffer` 是线程安全的，对方法加了同步锁。
 - `StringBuidler` 用于构造字符串。
 - `StringJoiner` 类似 python 里的 join 函数
 - AutoBox，可以在 `Integer` 和 `int` 之间转换。
@@ -75,12 +77,22 @@ class version
 - `BigInteger` & `BigDecimal` 大数
 - `Math` & `HexFormat` & `Random` & `SecureRandom`
 
+equals 和 == 有什么区别？
+- `==` 除了基本类型，默认比较的是引用地址。
+- `equals` 默认也是比较引用地址，但是如果重写了这个函数，会调用这个函数的逻辑。
+
+hashCode 有什么用？
+- 当把一个对象放到 HashMap 里时，判断条件是 hashCode && equals，
+- 如果 hashCode 不同，对象也不同，此时就减少了 equals 的比较次数。
+- hashCode 也是存放哈希值的地方。好的哈希算法会减少哈希碰撞。
+- 重写 equals 时，一定也要重写 hashCode 方法。否则 hashCode 不一样的话，根本到不了 equals 的逻辑。
+
 ## Java 异常处理
 异常的体系的 root class 是 Throwable，下面有两个子类：Error 和 Exception，Error 是严重的错误，不要捕获。Exception 则是可以处理的异常。
 
 Java规定：
 - 必须捕获的异常，包括 `Exception` 及其子类，但不包括 `RuntimeException` 及其子类。
-- 不需要捕获的异常，包括 `Error` 及其子类，`RuntimeException` 及其子类。
+- 不需要捕获的异常，包括 `Error` 及其子类，`RuntimeException` 及其子类，如数组越界,空指针等。
 
 可以用 `e.printStackTrace()` 打印调用栈。
 
@@ -103,7 +115,7 @@ Java 虚拟机默认会忽略断言，可以用 `-enableassertions / -ea` 打开
 一般是 Commons Logging + Log4j 的组合，但是更多的项目开始转向 SLF4j + Logback 的组合。
 
 ## 反射（Reflection）
-反射是为了解决在运行时期，对某个实例的类型一无所有的情况下，如何调用其属性和方法，类似 python 里的 `getattr/setattr`。
+反射是为了解决在运行时期，对某个实例的类型一无所知的情况下，如何调用其属性和方法，类似 python 里的 `getattr/setattr`。
 
 `Class` 类是 JVM 描述 Java Class 的一个类。每当我们定义一个类，Java 虚拟机会创建一个 Class 实例，用于描述这个类的所有信息，如包名，属性和方法等。
 

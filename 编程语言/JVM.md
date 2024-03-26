@@ -22,9 +22,10 @@ JVM 负责处理和解析 class 文件，将字节码文件编译成二进制机
 ![HotSpot JVM架构](https://www.oracle.com/webfolder/technetwork/Tutorials/obe/java/gc01/images/gcslides/Slide1.png)
 
 JVM 主要包含
-- 类加载器
+- 类加载器 classLoader
 - 执行机器
-- JIT 解释器
+- 字节码解释器
+- JIT 编译器
 - 垃圾回收器
 
 ## GC，garbage collect 垃圾回收
