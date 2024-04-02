@@ -57,11 +57,11 @@ void swap (stack& x);   // 交换两个栈
 ```c++
 bool empty() const;
 size_type size() const;
-const value_type & front() const; 队列头
+const value_type & front() const; // 队列头
 const value_type & back() const; // 指向最后一次 push 的元素
 void push(const value_type & val); // 在队列尾增加新元素
 void pop(); // 删掉 front 指向的元素
-deque<int> dq; 双向队列，有点像 list
+deque<int> dq; // 双向队列，有点像 list
 ```
 
 其他函数
@@ -437,14 +437,16 @@ while(getline(stream, line)) {
 *   泛型算法不执行容器的操作，因此无法改变容器的大小。
 *   这些算法是通用的，因此叫做泛型
 *   这些算法大部分包括在头文件 algorithm 中
-    *   find  // 查找操作
-    *   accumulate    // 累加求和
-    *   equal         // 比较元素是否相同，返回布尔类型
-    *   fill          // 批量赋值（用来清空？）
-    *   fill\_n        // 和 fill 用法类似
-    *   copy          // 批量拷贝
-    *   sort          // 排序
-    *   unique        // 消除重复元素
+```c++
+find          // 查找操作
+accumulate    // 累加求和
+equal         // 比较元素是否相同，返回布尔类型
+fill          // 批量赋值（用来清空？）
+fill_n        // 和 fill 用法类似
+copy          // 批量拷贝
+sort          // 排序
+unique        // 消除重复元素
+```
 
 ## 5. 命名空间
 
