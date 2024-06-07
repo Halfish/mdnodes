@@ -18,6 +18,20 @@ cat /proc/<pid>/status
 htop
 ```
 
+#### 防火墙
+
+CentOS 下用 firewall
+```bash
+# 查看防火墙规则，列出开发的端口
+sudo firewall-cmd --list-ports
+
+# 添加要开放的端口
+sudo firewall-cmd --zone=public --add-port=3306/tcp --permanent
+
+# 重启防火墙，生效新的规则
+sudo firewall-cmd --reload
+```
+
 #### 换行符的问题
 
 CR, Carriage Return
