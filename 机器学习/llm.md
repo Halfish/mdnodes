@@ -29,17 +29,43 @@
 - Vision
 
 ### HuggingFace
+[HuggingFace](huggingface.co) 字面的意思是一个拥抱的笑脸，是一家专门做大模型开源的美国公司，是开源集大成者。作为一家AI独角兽，目前估值20亿美元。
+
+社区提供了模型、数据集、代码等，与开发者共建机器学习应用。
+
 参考：
-- 存放开源模型，数据库的平台
-- https://huggingface.co/
+1. 模型
+    - 大模型， Meta/LLama，mistralai/Mixtral，Google/gemma，google-bert/bert-base，openai-community/gpt2
+    - 图文 stable-diffusion
+    - 音频 openai/whisper
+2. 代码库
+    - transformers 提供几千个与训练的模型，支持100多种语言，包含文本分类、信息抽取、问答、摘要、翻译、文本生成等。
+    - diffusers 文成图模型
+    - datasets 提供海量数据集下载和预处理的方法。
+    - peft 用来做微调的框架
+    - accelerate 给 pytorch 加速用的
+    - optimum 给 transformers/diffusers 库加速用的
+3. 数据集
+    - cais/mmlu
 
 ### FastChat
 用来部署大模型服务的
 
 ### LLaMA
-Meta 公司开源的大模型框架，基本都是基于这个开发的
-LLaMA-Factory
-    - deepspeed 多卡并行
+Meta 公司开源的大模型框架。
+- Github: [meta-llama/llama](https://github.com/meta-llama/llama)
+- 官网：
+
+### LLaMA-Factory
+大模型微调
+
+### LORA
+用于微调
+
+### DeepSpeed
+微软的团队做的，用于分布式的训练和推理。参考这篇[博客](https://huggingface.co/blog/zh/bloom-megatron-deepspeed)。
+
+- 官网：[deepspeed.ai](https://www.deepspeed.ai/)
 
 ### LangChain
 参考 
