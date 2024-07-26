@@ -1,4 +1,13 @@
 
+
+## LLM
+Chat 和 Instruct 模型的区别
+- Base 模型是用海量的无监督语料预训练得到的。
+- Chat 模型是用对话数据有监督训练得到的。
+- Instruct 模型是用“指令-回答”这样的训练对训练得到的。
+
+但是可以让 Chat 模型完成指令，也可以命令 Instruct 模型去对话，所以很多模型也不会区分。
+
 ## 相关的代码库和平台
 ### OpenAI
 参考：
@@ -50,22 +59,88 @@
 
 ### FastChat
 用来部署大模型服务的
+- Github 官网：https://github.com/lm-sys/FastChat
+- 背后的开发者组织是 LMSYS Org，属于 UC Berkeley Sky Lab；
+- 该组织开发的大模型叫 Vicuna
+
+运行服务
+```bash
+# 单个 GPU
+python3 -m fastchat.serve.cli --model-path lmsys/vicuna-7b-v1.5
+
+# 多GPU
+python3 -m fastchat.serve.cli --model-path lmsys/vicuna-7b-v1.5 --num-gpus 2
+
+# 限制内存
+python3 -m fastchat.serve.cli --model-path lmsys/vicuna-7b-v1.5 --num-gpus 2 --max-gpu-memory 8GiB
+
+# 仅 CPU
+python3 -m fastchat.serve.cli --model-path lmsys/vicuna-7b-v1.5 --device cpu
+
+# 量化
+python3 -m fastchat.serve.cli --model-path lmsys/vicuna-7b-v1.5 --load-8bit
+```
 
 ### LLaMA
 Meta 公司开源的大模型框架。
 - Github: [meta-llama/llama](https://github.com/meta-llama/llama)
-- 官网：
+- 官网：https://llama.meta.com/
+- Llama2：经典的模型
+- Llama3：最新的模型
 
 ### LLaMA-Factory
 大模型微调
 
-### LORA
-用于微调
+### LoRA, Low-Rank Adaptation
+把权重矩阵进行低秩矩阵分解，在微调的过程中，只更新低秩矩阵，大大减少了计算和存储需求。
+
+### QLoRA, Quantized Low-Rank Adaptation
+
+在 LoRA 的基础上，加上量化技术，把权重矩阵的 float32 量化成 int8 或者 int4，减少计算和存储。
+
+Hugging Face PETF LoRA 可以量化成 8 比特的权重，放到小于10G的GPU显存里。
+
+参考：
+- [Fine-tuning LLaMA3](https://llama.meta.com/docs/how-to-guides/fine-tuning)
+- [HuggingFace/PEFT](https://github.com/huggingface/peft)
+- [HuggingFace/TRL](https://github.com/huggingface/trl)
 
 ### DeepSpeed
 微软的团队做的，用于分布式的训练和推理。参考这篇[博客](https://huggingface.co/blog/zh/bloom-megatron-deepspeed)。
 
 - 官网：[deepspeed.ai](https://www.deepspeed.ai/)
+- 支持分布式训练，多卡训练，数据并行和模型并行，混合精度训练等。
+
+
+```python
+model_engine, optimizer, _, _ = deepspeed.initialize(args=cmd_args,
+                                                     model=model,
+                                                     model_parameters=params)
+
+# 替换下面的代码
+# torch.distributed.init_process_group(...)
+deepspeed.init_distributed()
+```
+
+默认用的是 `NCCL` 后端。
+
+### Flash-attention
+优化 Attention 性能的框架
+
+https://github.com/Dao-AILab/flash-attention
+
+### vllm
+用于 LLM 推理和服务的框架，注意spip大这个框架很大。
+
+### flash-attn
+用于加速
+
+
+### Stanford Alpaca 
+斯坦福开源的，用来微调大模型的框架。
+
+- 官网介绍：https://crfm.stanford.edu/2023/03/13/alpaca.html
+- Github项目: https://github.com/tatsu-lab/stanford_alpaca
 
 ### LangChain
 参考 
@@ -74,3 +149,6 @@ Meta 公司开源的大模型框架。
 - 用来部署大模型应用的，如 RAG，Chatbots 等
 - LangChain 还有 JS 版本的。
 - LangChain 的同类产品还有 AutoGen 和 LlamaIndex；
+
+### Gradio
+[Gradio](https://github.com/gradio-app/gradio) 是一个用来构建和分享机器学习应用的框架。
