@@ -1,18 +1,60 @@
+# 0. 概述
+mysql 5.7 & 8.0 是两个经典的版本。
+
+几个命令行：
+- `mysqld` 是 MySQL 的 daemon 服务。
+- `mysqld_safe` 会间接调用 mysqld，还会启动另一个监控进程，可以重启后台。而且出错时可以把出错信息定位到日志里。
+- `mysql.server` 类似 `mysqld_safe`，没找到这个命令。
+- `mysql` 客户端命令。
+
+配置文件在 `/etc/mysql/mysql.conf.d/mysqld.cnf`.
+日志在 `/var/log/mysql/error.log` 文件里。
+
+
 # 1. 安装与初始化
-```
-# 安装
-sudo yum install mysql
-sudo yum install mysql-server
-conda install mysql
 
+Ubuntu 下安装 server 和 client
+
+```bash
+# 1. mysql-server
+# 包括MySQL服务器守护进程 (mysqld)，数据库引擎，服务器端配置文件
 sudo apt install mysql-server
-sudo apt install mysql-client
 
-# 启动
+# 2. mysql-client
+# 包括MySQL命令行客户端 (mysql)，其他客户端工具，如 mysqladmin, mysqldump, mysqlimport 等
+sudo apt install mysql-client
+```
+
+启动 mysql 守护进程
+
+```bash
+# 立即启动服务，并且设置开机启动
+sudo systemctl start mysql
+# 设置开机启动
+sudo systemctl enable mysql
+
+# 下面的命令不太推荐，service 是个老版本的命令
 sudo service start/status/stop mysqld    # 启动 mysql 后台服务
-sudo systemctl start/status/stop mysqld
-/usr/bin/mysqladmin -u root password 'new-password’    # 重设密码
-/usr/bin/mysqladmin -u root -h zhangxiaobin.bcc-szth.baidu.com password 'new-password’    # 重设密码
+```
+
+连接数据库
+```bash
+# 在 Ubuntu 上，具体是 `/user/bin/mysql` 和 `/usr/sbin/mysqld`. 
+# 默认连接是没有密码的。
+sudo mysql -u root
+```
+
+用户和密码管理
+```bash
+# 重设密码
+/usr/bin/mysqladmin -u root password 'new-password'
+```
+
+或者也可以在 MySQL 里改动
+```sql
+ALTER USER 'username'@'localhost' IDENTIFIED BY 'newpassword';
+FLUSH PRIVILEGES;
+EXIT;
 ```
 
 # 2. 数据库相关操作
