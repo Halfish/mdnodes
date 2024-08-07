@@ -1,19 +1,5 @@
 
-### 初始化
-
 mysql 5.7 & 8.0 是两个经典的版本。
-
-几个命令行：
-- `mysqld` 是 MySQL 的 daemon 服务。
-- `mysqld_safe` 会间接调用 mysqld，还会启动另一个监控进程，可以重启后台。而且出错时可以把出错信息定位到日志里。
-- `mysql.server` 类似 `mysqld_safe`，没找到这个命令。
-- `mysql` 客户端命令。
-
-在 Ubuntu 上，具体是 `/user/bin/mysql` 和 `/usr/sbin/mysqld`. 没有密码。
-
-配置文件在 `/etc/mysql/mysql.conf.d/mysqld.cnf`.
-
-`sudo mysql -u root` 可以直接进去.
 
 ### MySQL server 层的查询步骤
 客户端发起请求，客户端接收请求，处理后返回结果，这中间值主要可以分成三步：

@@ -178,7 +178,7 @@ def logout():
 
 ```
 
-### Blueprinta
+### Blueprint
 可以看做是 application 的子模块，可以用来构建大型的项目。
 
 参考 flask 的相关文档：https://flask.palletsprojects.com/en/1.1.x/blueprints/
