@@ -21,8 +21,9 @@
 ```c++
 # 初始化
 vector<int> v(10);      // 初始化 10 个元素，默认为 0
-vector<int> v{10};      // 初始化 1 个元素，值为 10
 vector<int> v(10, 1);   // 初始化 10 个元素，值为 1
+
+vector<int> v{10};      // 初始化 1 个元素，值为 10
 vector<int> v{10, 1};   // 初始化 2 个元素，值为 10，1
 ```
 
@@ -31,69 +32,119 @@ vector<int> v{10, 1};   // 初始化 2 个元素，值为 10，1
 *   iterators: `begin`, `end`
 *   capacity: `size`, `resize`, `capacity`, `empty`, `reserve`
 *   element: `[]`, `at`, `front`, `back`
-*   modifiers: `push_back`, `pop_back`, `insert`, `erase`, `swap`, `clear`
+*   modifiers: `push_back`, `pop_back`, `insert`, `erase`, `swap`, `clear`, `shrink_to_fit`
 
 ```c++
-# 删除：
+vector<int> v;
+
+// 删除：
+vector<int>::iterator iter = v.begin();
 iter = v.erase(iter);   // 注意这里原本的 iter 不能再用，否则迭代器会失效；
 
-# 把 a 数组插入到 b 数组中
+// 把 a 数组插入到 b 数组中
 b.insert(b.end(), a.begin(), a.end());
+
+// 注意没有 pop_front() 函数，因为开销太大!
+v.push_back(3);
 ```
 
 ### 2.2 stack 栈，先进后出
 
 ```c++
+#include <stack>
+
 bool empty() const;
 size_type size() const;
 const value_type& top() const;
+
 void push (const value_type& val);
 void pop();
 void swap (stack& x);   // 交换两个栈
+
+// 效率更高，但是用的不多？
+// 和 push 相比，是在容器中构造对象，而不是临时构造后再移动或者复制
+void emplace(const value_type& val);
 ```
 
 ### 2.3 queue 队列，先进先出
 
+队列 queue
 ```c++
+#include <queue>
+
 bool empty() const;
 size_type size() const;
 const value_type & front() const; // 队列头
 const value_type & back() const; // 指向最后一次 push 的元素
 void push(const value_type & val); // 在队列尾增加新元素
 void pop(); // 删掉 front 指向的元素
-deque<int> dq; // 双向队列，有点像 list
 ```
 
-其他函数
+双向队列 deque
+```c++
+#include <deque>
+deque<int> dq; // 双向队列，有点像 list
+```
 
 *   `operator []` 下标访问
 *   `front`, `back` 栈头、尾
 *   `pop_back`, `pop_front`, `push_back`, `push_front`
-*   `shrink_to_fit`
+*   `shrink_to_fit` 释放掉多余的内存。
 
-### 2.4 list 双向链表
+### 2.4 list 链表
 
 在任何位置的插入和删除操作效率都很高，不支持随机访问
 
-*   `void assign(size_type n, const value_type& val);`
-*   `void assign(InputIterator first, InputIterator last);`
-*   `push_front, pop_front, push_back, push_front`
-*   `insert, erase` // 插入和删除
-*   `forward_list<int> fl;` // 单项链表，
-*   `insert_after`
-*   `emplace_after`
-*   `erase_after`
+**A. 双向链表**
+
+```c++
+#include <list>
+
+list<int> l;
+l.push_front(2);
+l.push_front(3);
+
+cout << l.front() << " " << l.back() << endl;
+```
+
+属性和方法：
+- `front`, `back`，链表头、尾
+- `push_front/push_back`, `pop_front/pop_back` 插入和删除头尾元素
+- `insert/erase` // 任意位置的插入和删除
+
+**B. 单向链表**
+
+```c++
+#include <forward_list>
+
+forward_list<int> fl;
+```
+属性和方法：
+- `front`，链表头
+- `push_front`, `pop_front` 插入和删除链表头，复杂度 `O(1)`
+- `insert_after`, `erase_after` 插入和删除任意位置，复杂度 `O(N)`
+
 
 ### 2.5 priority\_queue 优先队列，即最大堆
 
 属于关联容器
 
-*   头文件 `#include <queue>`
-*   最大堆`priority_queue<int> q(arr, arr+4);`
-*   最小堆 `priority_queue<int, vector<int>, greater<int> > q(arr, arr + 4);`
-*   入堆 `void push (const value_type& val);`
-*   堆顶元素 `const value_type& top() const;`
-*   删除堆顶元素 `void pop();`
+```c++
+#include <queue>
+
+// 最大堆
+int arr[4] = {2, 3, 4, 5};
+priority_queue<int> q(arr, arr+4);
+
+// 最小堆
+priority_queue<int, vector<int>, greater<int> > q(arr, arr + 4);
+```
+
+属性和方法：
+- `push`, 入堆
+- `top`, 堆顶元素
+- `pop`, 删除堆顶元素
+
 
 ### 2.6 set, multiset
 
@@ -166,17 +217,24 @@ m.count("age");         // 只会返回 0 或者 1
 
 哈希表实现的 map 和 multimap，key 需要重载 hash\_value()
 
-`#include <unordered_map>`
-`typedef unordered_map<string, int> mymap;`
-
-*   用法和上面的 map 一致，只是实现起来不一样。虽然哈希函数的复杂度是 O(1)，但是 re-hash 也带来了不稳定性；
-*   而且哈希函数速度也不一定那么快的，因此要综合考虑。
-*   map 基于红黑树实现，最坏和平均的复杂度都是 O(logN)，比较稳定。
+```c++
+#include <unordered_map>
+typedef unordered_map<string, int> mymap;
+```
+- 注意 `unordered_map / unordered_set` 是 `C++11` 才有的。
+- 用法和上面的 map 一致，只是实现起来不一样。虽然哈希函数的复杂度是 O(1)，但是 re-hash 也带来了不稳定性；
+- 而且哈希函数速度也不一定那么快的，因此要综合考虑。
+- map 基于红黑树实现，最坏和平均的复杂度都是 O(logN)，比较稳定。
 
 ### 2.8 unordered\_set, unordered\_multiset
 
 用哈希函数实现的 set 和 multiset
-algorithm
+
+```c++
+#include <unordered_set>
+```
+
+### 2.9 algorithm
 
 *   `reverse(v.begin(), v.end());`
 *   `sort(v.begin(), v.end(), cmp);`
