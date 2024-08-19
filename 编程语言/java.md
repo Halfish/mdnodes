@@ -1,6 +1,7 @@
 # Java
 参考：
 - [Java Guide](https://javaguide.cn/)
+- [二哥的Java进阶之路](https://javabetter.cn/)
 
 ## Java 历史
 时间线
@@ -8,7 +9,6 @@
 - Java8, 2014年发布，最经典的版本
 - Java11，2018年发布，长期支持的版本
 - Java21，最新的版本
-
 
 JAVA_HOME/bin 带的几个可执行文件
 - `java`，就是 JVM，Java 虚拟机，可以执行编译后的代码。
@@ -114,6 +114,55 @@ Java 虚拟机默认会忽略断言，可以用 `-enableassertions / -ea` 打开
 
 一般是 Commons Logging + Log4j 的组合，但是更多的项目开始转向 SLF4j + Logback 的组合。
 
+## Java Bean
+Java Bean 是一种符合特定规范的 Java 类，用于封装数据。Java Bean 主要用于简化 Java 组件的管理，特别是在图形用户界面（GUI）构建和企业应用开发中。它的定义和使用有一些标准的要求和规范。
+
+Java Bean 的规范
+- 具有一个无参构造函数：Java Bean 必须有一个无参构造函数，使得 Java Bean 可以被创建和初始化，而不需要额外的参数。
+- 属性可通过 getter 和 setter 方法访问：属性的访问和修改必须通过公共的 getter 和 setter 方法实现。方法名应遵循 getPropertyName 和 setPropertyName 的命名规则。
+- 可序列化：Java Bean 类通常实现 Serializable 接口，以支持对象的序列化和反序列化过程。
+- 属性是私有的：属性应该是私有的，通过公共的 getter 和 setter 方法来访问和修改这些属性。
+
+```java
+import java.io.Serializable;
+
+public class Car implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    // 私有属性
+    private String model;
+    private int year;
+
+    // 无参构造函数
+    public Car() {
+    }
+
+    // Getter 和 Setter 方法
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{model='" + model + "', year=" + year + "}";
+    }
+}
+
+```
+
 ## 反射（Reflection）
 反射是为了解决在运行时期，对某个实例的类型一无所知的情况下，如何调用其属性和方法，类似 python 里的 `getattr/setattr`。
 
@@ -178,7 +227,6 @@ Properties 属性文件。
 - `PriorityQueue` 优先队列。
 - `Deque` 双向队列
 - `Stack` 栈
-
 
 ## IO
 - `File` 对象
