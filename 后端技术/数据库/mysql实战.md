@@ -57,6 +57,13 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
+给用户 `admin` 控制数据库 `mydb` 的所有权限。
+```sql
+GRANT ALL PRIVILEGES ON mydb.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
+EXIT
+```
+
 # 2. 数据库相关操作
 
 ## 2.1 数据库管理
