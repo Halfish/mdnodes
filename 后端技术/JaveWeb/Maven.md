@@ -1,5 +1,3 @@
-[TOC]
-
 # Maven
 Apache Maven 是一个项目构建，以及依赖管理的工具。
 

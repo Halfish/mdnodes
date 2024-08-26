@@ -25,6 +25,21 @@ sudo apt install mysql-server
 sudo apt install mysql-client
 ```
 
+Mac下安装 mysql
+```bash
+# 安装服务端和客户端
+brew inistall mysql
+
+# 启动服务
+brew services start mysql
+
+# 修改密码（可选）
+mysql_secure_installation
+
+# 进入 mysql
+mysql -u root -p
+```
+
 启动 mysql 守护进程
 
 ```bash
