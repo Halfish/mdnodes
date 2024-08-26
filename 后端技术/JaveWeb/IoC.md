@@ -22,3 +22,10 @@
 
 直接赋值
 - `@Value("${jdbc.username:admin}")` 直接赋值，冒号后面的 `admin` 是默认值。
+
+Java 配置类
+- `@Configuration` 放在配置类前面，说明是Java配置类。
+- `@ComponentScan("org.example.ioc_01")` 扫描组件
+- `@PropertySource("classpath:jdbc.properties")` 引入配置
+- `@Bean` 放在方法前面，会把方法返回的对象注册为组件。
+- `@Import(value = JavaConfigurationA.class)` 引入其他的Java配置类
