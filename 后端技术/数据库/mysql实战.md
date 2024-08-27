@@ -79,6 +79,11 @@ FLUSH PRIVILEGES;
 EXIT
 ```
 
+**允许远程访问**
+
+直接编辑 `/etc/mysql/my.cnf`，配置 `bind_address: 0.0.0.0`。
+
+
 # 2. 数据库相关操作
 
 ## 2.1 数据库管理
