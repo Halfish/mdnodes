@@ -5,7 +5,7 @@
 ## 标注
 
 常见的几个标注
-- `@Component` 默认标注
+- `@Component` 默认标注，标注当前类为一个组件，会被放到容器里去。
 - `@Repository`, `@Service`, `@Controller`，和 `@Component` 作用一样。
 - `@PostContruct` 执行初始化，`@PreDestroy` 析构之前
 - `@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON/SCOPE_PROTYPE)` 指定单例、多例
