@@ -169,3 +169,16 @@ print(response.text)
 ```
 
 `requests` 会把 `Content-Type` 设置为 `multipart/form-data`，并处理文件边界和编码。
+
+## 3. 什么是 Restful？
+
+URI 和 URL 有什么区别？
+- URI（Uniform Resource Identifier，统一资源标识符）
+- URL（Uniform Resource Locator，统一资源定位符）
+- URI 范围更大，所有的 URL 都是 URI，反过来却不成立。
+- URI 偏向于标识一个资源，URL 用于标识+定位一个资源。
+
+restful 风格特点
+- URL 用名词，标识一个资源，GET/POST/PUT/DELETE 这四种请求方式用于区别动作。
+- HTTP 是无状态的，每个请求必须包含理解请求所必需的所有信息
+- 传参数的方式参考上面的内容。

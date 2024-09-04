@@ -65,7 +65,12 @@ sudo mysql -u root
 /usr/bin/mysqladmin -u root password 'new-password'
 ```
 
-或者也可以在 MySQL 里改动
+在 MySQL里创建新用户
+```sql
+CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'your_password';
+```
+
+修改用户密码
 ```sql
 ALTER USER 'username'@'localhost' IDENTIFIED BY 'newpassword';
 FLUSH PRIVILEGES;
