@@ -9,7 +9,7 @@ redis 是基于 BSD 协议开源的内存型数据结构存储系统，用于做
 
 因为 redis 是个 key-value 的服务器，但是 value 支持更多的类型。
 
-## 1 字符串（String，用 set 和 get 命令）
+## 1. 字符串（String，用 set 和 get 命令）
 
 Redis 用的字符串类型是自己实现的 Simple Dynamic String，简单动态字符串，如 `sdshdr16` 的定义如下
 ```c
@@ -55,7 +55,7 @@ TTL key
 KEYS *
 ```
 
-## 2 哈希（Hash）
+## 2. 哈希（Hash）
 - 和 Python 中的字典（dict）、Ruby 中的哈希很像
 - 存储如 `{'name': 'bruce', 'age': '14'}` 这样的数据结构
 - Redis中的哈希表最多支持 `2^32 - 1` 个键值对
@@ -94,7 +94,7 @@ HINCRBY key field 1
     - 当哈希表数量变大，会从 `ziplist` 转成 `hashtable`。
 
 
-## 3 列表（List，lpush lrange）
+## 3. 列表（List，lpush lrange）
 - 其实是链表，根据插入的次序来排序的字符串集合
 - 插入和删除的复杂度是 `O(1)`，但是索引的效率很低
 - 列举下面两种 lists 使用的场景
@@ -123,7 +123,7 @@ Redis 里的列表有三种实现
 - `quicklist` 从 Redis 5.0 引入的数据结构，是多个 `ziplist` 组成的双向链表。
 
 
-## 4 集合（`Set`）
+## 4. 集合（`Set`）
 有两种集合，`无序集合 set` 和`有序集合 zset`，都不允许重复元素
 
 **无序集合**，只支持字符串的集合，无序集合中最多可以存放 `2^32 - 1` 个元素。
@@ -153,7 +153,7 @@ Redis无序集合底层的实现是
 - `inset` 有序的整数集合，插入和删除的复杂度是 `O(N)`
 - `hashtable` 哈希表
 
-## 5 有序集合（`Zset`）
+## 5. 有序集合（`Zset`）
 **有序集合（zset）** 就麻烦一些，允许元素重复，且每个元素都会关联一个 `double` 类型的分数。集合元素会按照降序排序。
 
 修改：
@@ -191,7 +191,7 @@ ZSCORE key member
     - 用于快速获取元素，如 `ZSCORE`, `ZADD`, `ZREM`
 
 
-## 5 比特（Bitmaps）
+## 6. 位图（Bitmaps）（2.2新增）
 - 由字节流组成的数组。
 - setbit key 10 1 # 把第十个比特设置成 1
 - getbit key 10
@@ -200,5 +200,15 @@ ZSCORE key member
 - bitpos 返回第一个 0 或者 1 的比特位置
 
 
-## 6 HyperLogLogs
+## 7. HyperLogLogs（2.8新增）
 - 概率数据结构，用来估计集合的势（cardinality）
+
+比较常见的是用来统计网页的 UV 计数。
+
+注意该结果是基于概率统计的，有0.81%的误差率。
+
+## 8. GEO （3.2版新增）
+用于存储地理位置
+
+## 9. Stream（5.0版新增）
+用于消息队列。
