@@ -52,13 +52,13 @@ Redis内部用哈希表存储了每个 key 的过期时间。
 淘汰策略
 - 每次执行命令之前，都会检查下是否需要淘汰内存。
 - Redis支持8种策略
-    - noeviction, 默认不淘汰。
-    - volatile-ttl, TTL越小越先被淘汰。
-    - allkeys-random，随机淘汰
-    - volatile-random，设置了 TTL 随机淘汰
-    - allkey-lru，全体key，基于LRU算法淘汰
-    - volatile-lru，设置了TTL的key，基于LRU算法淘汰
-    - allkey-lfu，全体key，基于LFU算法淘汰
-    - volatile-lfu，设置了TTL的key，基于LFU算法淘汰
+    - `noeviction`, 默认不淘汰。
+    - `volatile-ttl`, TTL越小越先被淘汰。
+    - `allkeys-random`，随机淘汰
+    - `volatile-random`，设置了 TTL 随机淘汰
+    - `allkey-lru`，全体key，基于LRU算法淘汰
+    - `volatile-lru`，设置了TTL的key，基于LRU算法淘汰
+    - `allkey-lfu`，全体key，基于LFU算法淘汰
+    - `volatile-lfu`，设置了TTL的key，基于LFU算法淘汰
 - LRU（Least Recently Used）很久没用的会被优先删除
 - LFU（Least Frequency Used）用的少的会被优先删除
