@@ -1,6 +1,3 @@
-参考：
--[廖雪峰-数据库索引](https://www.liaoxuefeng.com/wiki/1177760294764384/1218728442198976)
-
 # 索引（Index）
 什么是索引？索引是**关系数据库**中对某一列或多个列的值进行**预排序**的数据结构，一般是用 `B/B+` 树这样的结构。树的节点由 key，value 对组成，key 是已排序的索引列，value 是指向数据行的指针。
 
@@ -25,3 +22,6 @@ ALTER TABLE students ADD CONSTRAINT uni_name UNIQUE (name);
 
 ## 非聚簇索引 (Nonclustered Index)
 又叫二级索引
+
+## B+树
+
