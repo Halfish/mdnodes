@@ -92,13 +92,13 @@ EXIT
 # 2. 数据库相关操作
 
 ## 2.1 数据库管理
-```
+```sql
 show full processlist;      # 查看所有进程
 kill <pid>;                 # 杀死某个进程
 ```
 
 ## 2.2 查看数据库
-```
+```sql
 show databases;             # 展示所有的数据库
 use research_platform;     # 使用该数据库
 show tables;                # 展示数据库中所有的表
@@ -107,7 +107,9 @@ describe team;              # 描述表 team 有哪些属性
 # 修改数据库
 create database fisheries;      # 创建数据库（注意 sql 语句有分号）
 drop database fisheries;        # 删除数据库
+```
 
+```bash
 # 导入数据
 mysqlimport -u root -p --local mytbl dump.txt
 
@@ -123,7 +125,7 @@ mysql -u root -p table_name < area.sql
 
 ## 2.3 表相关操作
 表管理
-```
+```sql
 # 创建表
 create table images(url varchar(20), label varchar(20));
 
@@ -140,7 +142,7 @@ alter table table_name add column column_name string(32) not NULL default '0'
 ```
 
 查询表
-```
+```sql
 # 查询数据
 select conf_id, title from conference_news where news_id > 10 or news_id < 3;
 distinct
@@ -172,7 +174,7 @@ SELECT name FROM person_tbl WHERE name REGEXP '^[aeiou]|ok`$';
 ```
 
 修改表数据
-```
+```sql
 # 插入数据
 insert into images (url, label) values ("<http://www.baidu.com>", “porn")
 insert into conference_news (conf_id, title, link) values (1, "title", "<http://www.sysu.edu.cn>");
@@ -190,7 +192,7 @@ delete from conference_news where title = "title”;
 
 ## 2.3 连接
 **inner join 内连接，等值连接**：求两个表的交集；
-```
+```sql
 SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
 ```
 
@@ -221,10 +223,25 @@ SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN
 安全
 防止 sql 注入，不要相信用户的输入，要做校验；
 
-# 5. 其他
+
+# 慢查询
+
+用 `explain`，`show profiling` 命令解析查询的细节。
+
+1. 索引设计优化
+2. join表过多，需要优化
+3. 数据表设计优化
+
+如果 SQL 查询达到瓶颈
+1. 读写分离（主从架构）
+2. 分库分表
+
+用 `mysqldumpslow` 命令把慢查询导出到本地。
+
+# 其他
 
 修改 mysql 的默认密码
-```
+```sql
 show databases;
 use mysql;
 update user set authentication\_string=PASSWORD("自定义密码") where user='root';
@@ -234,12 +251,12 @@ quit;
 ```
 
 重启 server
-```
+```bash
 /etc/init.d/mysql restart;
 sudo service mysql restart
 ```
 
-# 6. 常见面试题
+# 常见面试题
 
 **drop、delete、truncate 有什么区别**
 drop 会删除表结构，delete删除某些行数据、truncate 只保留表结构；drop 最快，delete 最慢
