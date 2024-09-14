@@ -200,15 +200,7 @@ SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN
 
 **right join，右连接**：保留全部右表的数据，语法把 inner 换成 right 即可；
 
-# 3. 事务（transaction）
-
-事务具有四个条件，ACID
-- 原子性，Atomicity，一个事务的所有操作，要么全部完成，要么全部不完成。执行错误时需要回滚。
-- 一致性，Consistency，在事务开始之前和事务结束以后，数据库的完整性没有被破坏。
-- 隔离性，Isolation，允许多个事务并发执行。
-- 持久性，Durability，事务处理结束后，对数据的修改是永久的，及时系统故障也不会丢失。可以在 SQL 语句两端执行事务的指令：BEGIN, ROLLBACK, COMMIT 等；
-
-# 4. 索引
+# 3. 索引
 
 建立索引对于数据库的检索至关重要
 - 创建索引：`CREATE INDEX indexName ON table_name (column_name)`

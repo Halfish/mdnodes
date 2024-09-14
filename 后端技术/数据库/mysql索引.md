@@ -77,4 +77,25 @@ B-Tree 就是 B树，而 B+ 树是 B 树的一种变体，也是一种具体的�
 
 ## 索引失效
 
-最左匹配原则
+```sql
+-- 1. 隐式转换会让索引失效
+-- 假设 `id` 是一个 VARCHAR 类型的索引列
+SELECT * FROM users WHERE id = 123; -- 将发生隐式类型转换
+
+-- 2. 函数表达式会让索引失效
+SELECT * FROM users WHERE UPPER(name) = 'JOHN';
+
+-- 3. 使用不等式符号，或者 NOT IN 操作符，会让索引失效
+SELECT * FROM users WHERE age <> 30;
+
+-- 4. LIKE 语句中，% 作为开头会让索引失效
+SELECT * FROM users WHERE name LIKE '%john%';
+
+-- 5. OR 语句无法使用联合索引的所有列，如果不是所有列都有索引，会导致全表扫描
+SELECT * FROM users WHERE name = 'john' OR age = 30;
+
+-- 6. 索引不适用于 `IS NULL` 或者 `IS NOT NUL`L 语句
+
+-- 7. 最左匹配原则
+--  如果有 (col1, col2) 联合索引，但是用的是 where cols = 'value'，则不会用到联合索引
+```

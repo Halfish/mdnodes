@@ -87,9 +87,50 @@ Redo Log 也不是一步刷新到硬盘中的，有 redo log buffer 做一步缓
 
 InnoDB 中的 MVCC 是通过 undo 日志来实现的。
 
+注意 Undo 日志是逻辑日志，不需要持久化到硬盘里，也就更不需要 undo log buffer 了。
+
 ## Buffer Pool
 
 mysql 向操作系统申请的连续内存空间，用来存储数据页，作为读写数据的缓存空间。
 
 ## 锁
 锁可以用来保证事务的隔离性。
+
+### 按照操作类型划分
+- 读锁/共享锁（Shared Lock，S Lock）
+    - 多个事务一起读，不会相互影响，相互不阻塞
+- 写锁/排他锁（Exclusive Lock，X Lock）
+    - 同一个时间段，只能有一个事务执行**读取**或者写入
+
+InnoDB 的读写锁可以加载表上，也可以加在行数据上。
+
+```sql
+-- S 锁
+SELECT  ... LOCK IN SHARED MODE;
+-- MySQL 8.0 语法
+SELECT ... SHARED MODE;
+
+-- X 锁
+SELECT ... FOR UPDATE;
+```
+
+在 MySQL 5.7 以及之前的版本，如果获取不到锁，就会一直等待，直到 `innodb_lock_wait_timeout` 超时。
+
+MySQL 8.0 之后，可以通过一些关键词定义一些行为：
+- `NOWAIT`，立马返回，且报错；
+- `SKIP LOCKED` 立马返回，跳过锁定的行。
+
+
+### 按照粒度划分
+表级锁
+行级锁
+页级锁
+
+### 按照态度
+悲观锁、乐观锁
+
+### 加锁方式
+显示锁、隐式锁
+
+### 其他
+全局锁、死锁
