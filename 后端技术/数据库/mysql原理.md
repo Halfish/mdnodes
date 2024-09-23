@@ -110,3 +110,28 @@ Mysql GTID 全称为Global Transaction Identifie，在整个复制的过程中�
 全局变量
 - `GTID_EXECUTED` 已经执行的 GTID 集合；
 - `GTID_PURGED` 已经清楚的 GTID 集合；
+
+
+### 日志日志
+
+日志类型
+1. `二进制日志`：记录所有更改数据库的语句
+    - 数据复制：用于主从服务器同步
+    - 数据恢复：用于数据库故障时的恢复。
+    - `show variables like '%log_bin%'` 查看bin日志路径
+    - `mysqlbinlog -v /var/lib/mysql/binlog.000064`
+    - 可以用 `mysqlbinlog` 直接恢复数据
+    - `show binlog events in binlog.000064`
+2. `错误日志`：记录error级别的日志
+    - `show variables like '%log_err%'` 查看错误日志路径
+3. `通用查询日志`：记录用户所有的操作，如指令，连接等
+    - `show variables like '%general%'`
+    - `set global general_log=on` 打开通用日志
+4. `慢查询日志`：查询时间超过 `long_query_time` 的查询。
+5. `中继日志(replay log)`：从服务器读取的日志，用于同步数据
+6. `数据定义语句日志`：记录数据定义语句执行的元数据操作。
+
+
+redo log 和 bin log 区别？
+- redo Log 是物理日志，记录磁盘和数据页的修改。bin log 是逻辑日志，记录数据做了什么操作。
+- redo log 用于事务的持久性；bin log 用于主从数据库的数据一致性。
