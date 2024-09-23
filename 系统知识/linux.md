@@ -1,3 +1,37 @@
+## 用户和权限管理
+
+```bash
+# 添加新用户
+sudo adduser zhangxb
+# 添加到 sudo 用户组
+sudo usermod -aG sudo zhangxb
+```
+
+
+## 环境配置
+```bash
+
+# install zsh
+sudo apt install zsh
+
+# Install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+```
+
+### SSH
+```bash
+# 生成密钥
+ssh-keygen -t rsa -f ~/.ssh/id_rsa_server1
+
+# 将公钥复制到服务器上
+ssh-copy-id -i ~/.ssh/id_rsa_server1.pub username@server1_ip
+
+# 配置 PubkeyAuthentication yes，启用公钥认证
+sudo vim /etc/ssh/sshd_config
+```
+
+
 ### 录屏
 kazam 录屏
 
