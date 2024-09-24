@@ -1,4 +1,4 @@
-# 0. 概述
+## 0. 概述
 mysql 5.7 & 8.0 是两个经典的版本。
 
 几个命令行：
@@ -11,7 +11,7 @@ mysql 5.7 & 8.0 是两个经典的版本。
 日志在 `/var/log/mysql/error.log` 文件里。
 
 
-# 1. 安装与初始化
+## 1. 安装与初始化
 
 Ubuntu 下安装 server 和 client
 
@@ -89,15 +89,15 @@ EXIT
 直接编辑 `/etc/mysql/my.cnf`，配置 `bind_address: 0.0.0.0`。
 
 
-# 2. 数据库相关操作
+## 2. 数据库相关操作
 
-## 2.1 数据库管理
+### 2.1 数据库管理
 ```sql
 show full processlist;      # 查看所有进程
 kill <pid>;                 # 杀死某个进程
 ```
 
-## 2.2 查看数据库
+### 2.2 查看数据库
 ```sql
 show databases;             # 展示所有的数据库
 use research_platform;     # 使用该数据库
@@ -123,7 +123,7 @@ LOAD DATA LOCAL INFILE "/var/lib/mysql-files/area.sql" INTO table OperationArea;
 mysql -u root -p table_name < area.sql
 ```
 
-## 2.3 表相关操作
+### 2.3 表相关操作
 表管理
 ```sql
 # 创建表
@@ -190,7 +190,7 @@ delete from conference_news where conf_id = 2;
 delete from conference_news where title = "title”;
 ```
 
-## 2.3 连接
+### 2.4 连接
 **inner join 内连接，等值连接**：求两个表的交集；
 ```sql
 SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
@@ -200,7 +200,7 @@ SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN
 
 **right join，右连接**：保留全部右表的数据，语法把 inner 换成 right 即可；
 
-# 3. 索引
+## 3. 索引
 
 建立索引对于数据库的检索至关重要
 - 创建索引：`CREATE INDEX indexName ON table_name (column_name)`
@@ -216,7 +216,7 @@ SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN
 防止 sql 注入，不要相信用户的输入，要做校验；
 
 
-# 慢查询
+## 4. 慢查询
 
 用 `explain`，`show profiling` 命令解析查询的细节。
 
@@ -230,7 +230,15 @@ SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN
 
 用 `mysqldumpslow` 命令把慢查询导出到本地。
 
-# 其他
+
+## 5. 备份
+备份的方案：
+1. 物理备份：用 `xtrabackup` 工具来进行物理备份。
+2. 逻辑备份：用 `mysqldump` 备份所有的 sql 语句。
+    - 用 `mysqldump -u root -p --database > backup.sql` 备份数据
+    - 用 `mysql -u root -p [dbname] < backup.sql` 恢复数据
+
+## 6. 其他
 
 修改 mysql 的默认密码
 ```sql
@@ -248,22 +256,11 @@ quit;
 sudo service mysql restart
 ```
 
-# 常见面试题
+## 7. 常见面试题
 
 **drop、delete、truncate 有什么区别**
 drop 会删除表结构，delete删除某些行数据、truncate 只保留表结构；drop 最快，delete 最慢
 delete 语句是 dml，这个操作会放到 rollback segement 中，事务提交之后才生效。其他两个语句不能回滚；
-
-**超键、候选键、主键、外键的区别**
-- 超键：super key，在关系中能够表示元素的属性集（可以有多个属性）称为关系模式的超键。
-- 候选键：是最小的超键，即没有冗余元素的超键
-*- 主键：数据库表中对存储数据对象予以唯一和完整标示的数据列或属性的组合。一个数据里只能有一个主键，且不能确实或者为 null；
-- 外键：在当前表中存在另一个表的主键，称为此表的外键。
-
-**数据的三大范式**
-- 第一范式：每个列都不可以再拆分
-- 第二范式：在第一范式的基础上，非主键列完全依赖于主键，而不能是依赖于主键的一部分。
-- 第三范式：在第二范式的基础上，非主键列只依赖于主键，不依赖于其他非主键。
 
 **MYSQL 常见的引擎**
 
