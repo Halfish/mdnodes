@@ -123,6 +123,17 @@ LOAD DATA LOCAL INFILE "/var/lib/mysql-files/area.sql" INTO table OperationArea;
 mysql -u root -p table_name < area.sql
 ```
 
+查看数据库表占据的空间大小
+```
+SELECT
+    table_schema AS 'Database',
+    SUM(data_length + index_length) / 1024 / 1024 AS 'Size (MB)'
+FROM
+    information_schema.tables
+GROUP BY
+    table_schema;
+```
+
 ### 2.3 表相关操作
 表管理
 ```sql

@@ -11,14 +11,18 @@ Kubernetes, k8s, 是一个便捷的，可扩展的开源平台，用来管理容
 运维一般有三种运行应用的模式，第一种是运行在物理机上。第二种是用虚拟机；第三种是容器，比虚拟机更加轻量。k8s是管理容器的工具。
 
 ### 1. Deployment
-kill pod
-```
+
+如何删除 deployment？
+
+```bash
 kubectl scale deployment project-caocao-cron --context=ali-cn-shenzhen --namespace=fleet-service-staging --replicas 0
 
 kubectl delete deployment project-caocao-cron --context=ali-cn-shenzhen --namespace=fleet-service-staging
 ```
 
 ### 2. Service
+
+Service 为不同的多个 pod 提供同一的对外 IP，并自动做负载均衡。
 
 ### 3. Pod
 
@@ -37,7 +41,7 @@ kubectl delete pod --context=gz --namespace=fleet-service-dev --field-selector=s
 ### 4. Secret
 
 创建 secret
-```
+```bash
 # 从原始数据创建
 kubectl create secret generic db-user-pass \
     --from-literal=username=admin \
@@ -50,14 +54,14 @@ kubectl create secret generic db-user-pass \
 ```
 
 查看
-```
+```bash
 kubectl get secrets
 kubectl describe secrets
 
 ```
 
 解码
-```
+```bash
 # 输出为文件
 kubectl get secret db-user-pass -o jsonpath='{.data}'
 
