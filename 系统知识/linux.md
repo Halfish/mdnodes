@@ -19,6 +19,27 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 ```
 
+## 终端
+screen 可以用来重连终端。
+
+```bash
+# 安装
+sudo apt install screen
+
+# 建立一个新的会话
+screen -S new_session
+
+# 用快捷键退出
+# 按住 Ctrl + a，然后按 d，就分离了当前的会话
+
+# 查看有哪些会话
+screen -ls
+
+# 重连会话
+screen -r new_session
+
+```
+
 ### SSH
 ```bash
 # 生成密钥
