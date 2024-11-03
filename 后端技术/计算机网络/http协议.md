@@ -18,3 +18,8 @@ HTTP 1.1 的缺点
 HTTP 2.0 的改进
 - 二进制分帧，是多路复用的基础
 - 多路复用
+
+HTTP 3.0
+- 基于 QUIC (Quick UDP Internet Connections) 协议，是基于 UDP 协议的。
+- 引入多路复用，内嵌 TLS 加密协议。
+- 智能拥塞控制算法。
