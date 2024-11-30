@@ -1,7 +1,20 @@
 
 
+## 安装 Brew
 
-## Brew
+需要用国内的镜像环境来安装，参考[Homebrew中文网](https://brew.idayer.com/)：
+
+```bash
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/bottles"
+
+/bin/bash -c "$(curl -fsSL https://gitee.com/ineo6/homebrew-install/raw/master/install.sh)"
+```
+
+
+## 替换 Brew 源
 
 **替换国内源**
 
