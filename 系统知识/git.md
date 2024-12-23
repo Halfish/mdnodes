@@ -1,6 +1,13 @@
 # Git
 
 
+## 配置
+
+中文乱码问题
+```bash
+git config --global i18n.logOutputEncoding utf-8
+git config --global core.quotepath off
+```
 
 ## 分支 Branch
 
