@@ -1,5 +1,118 @@
 # Git
 
+参考
+- [廖雪峰的教程](https://www.liaoxuefeng.com/wiki/896043488029600)
+- [learning it](https://learngitbranching.js.org/)
+
+Git 是一个分布式的版本控制系统；
+
+SVN 也是一个版本控制系统，但是是集中式的，有中央服务器的概念；
+
+## 初始化与配置
+初始化
+```bash
+# 创建一个新的仓库，会在当前的目录下创建 .git/ 文件夹；
+git init 
+
+# 配置基本信息
+git config --list 查看配置的信息
+git config --user.email xiaobinzhang@pony.ai
+git config --user.name xiaobinzhang
+```
+
+## 代码管理
+代码的状态分成：工作区、暂存区、版本库三种。
+
+主要流程：
+```mermaid
+graph LR
+    工作区 -->|git add| 暂存区
+    暂存区  -->|git commit| 版本库
+    版本库 -->|修改文件| 工作区
+    暂存区  -->|git reset| 工作区
+    工作区 -->|git checkout| 工作区
+```
+
+用 `git add` 提交代码
+```bash
+# 会把文件从工作区（working directory）提交到暂存区（staging area）；
+git add readme.txt 
+```
+
+用 `git commit` 提交更改
+```bash
+# 提交更改，永久记录到版本历史中
+git commit
+
+# 合并上次的提交
+git commit --amend
+git commit --amend --no-edit
+git commit --amend -m “new commit log"
+```
+
+用 `git reset` 命令可以撤销更改
+```bash
+git add text.txt
+# 1. 从暂存区回退到工作区，和 git add 命令相反
+git reset HEAD text.txt
+
+git add text.txt
+git commit
+# 2. 回退上个版本到工作区，等于 add+commit 的反操作
+# 当前版本是 HEAD，上个版本是 HEAD^，上上个版本是 HEAD^^或者 HEAD~2；
+git reset HEAD^ text.txt
+
+# 回退到 序号为 commit_id 的那个版本
+git reset commit_id
+```
+
+`git reset` 有三种模型
+- `--soft` 撤销提交，不会影响工作区和暂存区
+- `--mixed(default)` 撤销提交和添加，回到工作区。
+- `--hard` 撤销提交和修改，慎用，所有的修改都没了。
+
+用 `git log` 查看修改历史
+```bash
+# 查看当前 commit 的修改历史
+git log
+# 美化版的日志
+git log --pretty=oneline
+
+# 查看修改历史
+git reflog
+```
+
+## 分支管理
+
+分支习惯：
+- master: 主分支，尽量稳定
+- dev: 开发分支，用于开发新功能；
+- release: 发布分值，发布稳定的版本
+- bug: 用于本地来解决 bug；
+
+ 换 remote
+    - git remote rm origin # 删除现在的远程地址
+    - git remote add origin https://github.com/Halfish/test.git
+- 远程仓库
+    - git remote add origin git@github.com:michaelliao/learngit.git 添加远程仓库
+    - git push -u origin master 推送到远程仓库中；
+    - git clone git@github.com:michaelliao/gitskills.git 从远程仓库克隆一个版本
+- 多人协作
+    - git branch --set-upstream-to=origin/dev dev # 本地 dev 和远程的 dev 要建立连接；
+    - git pull  # 从远程拉取代码；
+    - git pull = git fetch + git merge FETCH_HEAD
+    - git pull --rebase = git fetch + fet rebase FETCH_HEAD
+- rebase
+    - git rebase；  # rebase操作可以把本地未push的分叉提交历史整理成直线；
+    - git rebase 可能会因为冲突而中断
+    - git rebase --continue 解决冲突以后，继续操作
+- 标签
+- git tag v1.0
+    - git tag v0.9 f52c633 # 针对某个 commit_id 来打标签； 
+    - git show v0.9 # 查看标签信息
+    - git tag -a v0.1 -m "version 0.1 released” 1094adb # 创建带有说明的标签，用-a指定标签名，-m指定说明文字
+- github or gitee
+    - https://gitee.com/
 
 ## 配置
 
@@ -11,7 +124,34 @@ git config --global core.quotepath off
 
 ## 分支 Branch
 
-### 删除分支
+创建分支
+```bash
+# 查看分支
+git branch -a
+
+# 新建一个叫做 "spoon" 的分支
+git branch spoon
+
+# 切换到 spoon 分支
+git checkout spoon
+
+# 新建并且切换到 spoon 分支；
+git checkout -b spoon
+
+# 建议用 switch 命令替换 checkout；
+git switch -c spoon
+```
+
+合并分支
+```bash
+# 合并 spoon 到当前的分支
+git merge spoon
+
+# 禁用 fast-forward 模式
+git merge --no-ff -m "merge with no-ff” dev
+```
+
+删除分支
 ```bash
 # 删除本地分支，不能在要删除的分支上操作，且分支必须得提交到远程
 git branch -d <branch_name>
@@ -46,4 +186,19 @@ git stash clear
 
 # 查看 diff
 git stash show
+```
+
+## 其他问题
+
+### 卡顿问题
+有时候 git 仓库太大，oh-my-zsh 检测可能会卡住，执行
+```bash
+git config --add oh-my-zsh.hide-dirty 1    # 设置 oh-my-zsh 不读取文件变化信息
+git config --add oh-my-zsh.hide-status 1   # 设置 oh-my-zsh 不读取任何 git 信息
+```
+
+### 中文乱码
+如果出现中文乱码，可以关掉转义配置。
+```bash
+git config --global core.quotepath off
 ```
