@@ -65,3 +65,44 @@ To                         Action      From
 如果内网端口没开放，但是外网端口开放了，说明 IP 被封了，只能重建机器；
 如果内网和外网都关闭了，可能是服务器的防火墙限制了端口。
 
+## Mac 下的守护进程
+
+编辑 `~/Library/LaunchAgents/com.v2ray.plist`
+
+```plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.v2ray</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/opt/homebrew/bin/v2ray</string>
+            <string>run</string>
+            <string>-config</string>
+            <string>/Users/zhangxiaobin/.v2ray/client.json</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardOutPath</key>
+        <string>/tmp/v2ray.log</string>
+        <key>StandardErrorPath</key>
+        <string>/tmp/v2ray.err</string>
+    </dict>
+</plist>
+```
+
+启动守护进程
+```bash
+# 修改权限
+chmod 644 ~/Library/LaunchAgents/com.v2ray.plist
+
+# 启动守护进程
+launchctl load ~/Library/LaunchAgents/com.v2ray.plist
+
+# 查看进程
+ps aux | grep v2ray
+```
