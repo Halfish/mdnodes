@@ -202,3 +202,22 @@ git config --add oh-my-zsh.hide-status 1   # 设置 oh-my-zsh 不读取任何 gi
 ```bash
 git config --global core.quotepath off
 ```
+
+### 设置代理
+
+如果 git 命令遇到了网络问题，可以配置 SSH 代理。
+
+```bash
+vim ~/.ssh/config
+```
+
+编辑配置
+```
+Host github.com
+    HostName github.com
+    User git
+    ProxyCommand nc -X 5 -x <proxy_address>:<proxy_port> %h %p
+```
+
+- 将 `<proxy_address>` 替换为 SOCKS 代理地址（例如 127.0.0.1）。
+- 将 `<proxy_port>` 替换为代理端口（例如 1080）。
