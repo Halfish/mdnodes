@@ -125,3 +125,26 @@ docker info
     - 类似于 RUN，但是 RUN 在 docker build （构建镜像）时运行，CMD 在 docker run （构建容器）时运行
 - `ENTRYPOINT ["<可执行文件或命令>","<param1>","<param2>",...]`
     - 定义为镜像的主命令，一般是入口脚本
+
+## 6. 安装 nvidia-container-toolkit
+
+如果需要在 docker 中调用 GPU 资源，需要安装 NVIDIA Container Toolkit（nvidia-docker2）。
+
+参考官网：[Installing the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+注意不要安装 nvidia-docker 或者 nvidia-docker2，这些是老版本，已经不支持了。
+
+测试下是否安装成功：
+
+```bash
+# 指定所有的卡
+docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
+
+# 指定两张卡
+docker run --rm --runtime=nvidia --gpus 2 ubuntu nvidia-smi
+
+# 指定第0,2两张卡
+docker run --rm --runtime=nvidia --gpus '"device=0,2"' ubuntu nvidia-smi
+```
+
+这里的 `--runtime=nvidia` 可以省略
