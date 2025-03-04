@@ -113,3 +113,59 @@ term
 - term 在 Raft 系统中可以看做是时间时钟；
 - 每个服务器都保存自己的 term 值，两个服务器通信时，小的 term 会被改成大的 term；
 - 当一个 leader 或者 candidate 发现自己的 term 值过时了（out of date），
+
+
+---
+
+Leader 为了维持一致性
+- 用 AppendEntries RPCs 检查日志是否有冲突；
+- 有冲突，则找到最近的无冲突的那一项，此后的日志项全部删掉。用 Leader 的日志项覆盖。
+- 具体如何做呢？
+    - Leader 会为每个 server 维持一个 `lastIndex` 变量；初始化为自己的当前 log index
+    - 向 server 发动 AppendEntries RPCs
+        - 如果失败，说明日志有冲突，则减小 lastIndex
+        - 如果成功，说明日志没有冲突，数据会保持一致性；
+
+#### Safety 安全性
+
+在日志复制时，要求 Leader 完全覆盖 Server 的日志项，但是前提得是 Leader 的日志项是完整的，合理的。
+
+这个性质叫 `the Leader Completeness Property`。
+
+Raft 在选举 Leader 时，就需要 Candidate 的日志项是包含所有的 commited logs，具体做法：
+1. Follower 在成为 Candidate 之前，需要发送 `RequestVote RPCs`，同时会带上自己所有的日志项。
+2. 如果有服务器的日志更新，则会拒绝投票。
+3. 因此只有半数的服务器统一投票，该节点才会成为 Leader，也就保证了日志是得到了半数以上的服务器认可，即处于 commited 状态；
+
+
+**Committing entries from previous terms**
+如果日志项写入了半数的服务器，但是 Leader 突然挂了，后续的 Leader 不一定能保证该日志项的提交。
+- Raft 规定只会提交 Leader 当前 term 的日志。
+
+**Leader Completeness Property**
+- 论文给出了证明
+
+Follower 和 Candidate 宕机
+- Raft 的 RPCs 都是幂等的（idempotent），即多次请求都是一样的结果。
+
+
+领导者选举（Leader election）是时间敏感性最强的环节。为确保系统能够成功选举并维持一个稳定的领导者，Raft要求满足以下时间约束关系：
+
+`broadcastTime << electionTimeout << MTBF​`
+
+其中：
+• ​**broadcastTime**：服务器向集群中所有节点并行发送RPC并接收响应的平均耗时；0.5ms~20ms
+• ​**electionTimeout**：选举超时时间（如第5.2节所述）；10ms~500ms
+• ​**MTBF**​（Mean Time Between Failures）：单个服务器发生故障的平均间隔时间；≈ several months
+
+三个时间在选择的时候，要保证非同一个数量级。
+
+**Cluster membership changes**
+- 当集群中的成员发生变化时，Leader 采用两阶段的配置；
+- 第一阶段用 新旧组成的联合配置，保证提交日志项必须得到旧配置中多数派的同意；
+- 第二阶段用新配置，提交日志项需要得到新配置中多数派的同意。
+
+**Log Compaction**
+- 日志压缩用的快照技术（Snapshotting）
+
+Raft 核心代码就 2000+ 行，不包含注释、空行、测试代码。
