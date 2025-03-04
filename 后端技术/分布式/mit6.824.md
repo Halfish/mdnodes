@@ -76,9 +76,11 @@ MapReduce 系统能利用大量的技术处理涉及大数据的复杂问题。
 BigTable 是 NoSQL，因为行数据不必包含所有的列。
 
 ### Raft
+
+#### Raft 概述
 Raft 是一种基于投票机制实现的共识算法（Consensus），是 Paxos 算法的改进，主要的改进点是更好理解（Understandability）和实现。
 
-共识算法：是分布式系统中用于在多个独立节点间达成数据一致性的核心机制，主要用于解决网络不可靠、节点可能故障等复杂场景下的协同决策问题。
+共识算法：是分布式系统中用于在多个独立节点间达成**数据一致性**的核心机制，主要用于解决网络不可靠、节点可能故障等复杂场景下的协同决策问题。
 
 "Raft" 英文原意为木筏，象征该算法为分布式系统提供稳定基础，如同木筏在水面上保持平衡，即使遇到节点故障或网络波动，仍能维持系统一致性。
 
@@ -101,9 +103,9 @@ Raft 包含四块内容：
 1. Leader election：领导者选举；如果领导者挂了，需要选举出新的领导者；
 2. Log Replication：日志复制；领导者从客户端接收日志项（log entry）
 3. Safety：安全性；对已经应用的日志项，所有的服务器都需要强制性保持一致。
-4. Membership Changes
+4. Membership Changes 集群的机器发生变更
 
-** Raft 基础**
+**Raft 基础**
 一个 Raft 集群包含多个服务器，每个服务器处于三种状态中的一个：
 - leader：正常状态下只有一个服务器是 leader；
 - candidate：选举新 leader 时的状态；
@@ -113,7 +115,6 @@ term
 - term 在 Raft 系统中可以看做是时间时钟；
 - 每个服务器都保存自己的 term 值，两个服务器通信时，小的 term 会被改成大的 term；
 - 当一个 leader 或者 candidate 发现自己的 term 值过时了（out of date），
-
 
 ---
 
@@ -125,6 +126,62 @@ Leader 为了维持一致性
     - 向 server 发动 AppendEntries RPCs
         - 如果失败，说明日志有冲突，则减小 lastIndex
         - 如果成功，说明日志没有冲突，数据会保持一致性；
+
+#### Leader 选举
+
+Follower -> Candidate
+- Raft 使用心跳机制（Heartbeat mechanism）来触发 Leader 选举；
+- Leader 通过周期性地发送心跳（空的 AppendEntries RPCs），来确保自己的 Leader 地位；
+- 如果 Follower 一定时间内没有收到 Leader 的心跳，即到了 `election timeout`，就会认为没有 Leader，接着开始一轮选举；
+- 开始选举时，Follower 把自己的 term 自增，并且状态改成 Candidate；
+
+Candidate->Leader
+- Candidate 首先给自己投票，然后并发地向其他的服务器发送 RequestVote RPCs，要求给自己投票。
+- Candidate 状态的机器只会在下面三种情况下改变状态：1. 自己成为 Leader；2. 另一个服务器成为 Leader；3. 一段时间后，没有胜者
+- Candidate 只有在同一个 term 内得到大多数（即大于一半）的投票后才算胜利；这个规则保证了只会有一个 Leader
+- Candidate 成为 Leader 后，立马给所有的服务器发送心跳信息，以避免新一轮的选举；
+
+仅当同时满足以下条件时，接收节点投赞成票：
+- Candidate的任期号不小于自身当前任期。
+- 接收节点未在该任期内投票，或已投票但对象是同一Candidate。
+- Candidate的日志至少与自身日志一样新。
+
+Candidate->Follower
+- 在等待投票时，Candidate 可能会收到心跳信息；
+  - 如果对方的 term 相等或者比自己大，则认可对方的 Leader 地位；
+  - 如果对方的 term 比自己小，则拒绝，且继续保持 Candidate 状态；
+- 投票的结果可能没有任何人超过半数，则此轮选举结果；candidate 的 term 会自动自动，并开始新一轮的选举；
+- 如果没有别的机制，选举可能会无限制的持续下去。
+- 解决方法是 `election timeout` 会从一个区间内随机选取（如 150~300ms），这样 follower 会在不同的时间开始选举。减少选举失败的概率。
+
+#### Log replication
+
+Log replication
+- 当 Leader 收到客户端的请求（即一条改变状态机的指令），首先把这条命令（Command）作为日志项（Log Entry）增加到自己的日志中。
+- 并发地发送 AppendEntries RPCs 到每个服务器，要求复制 Entry。
+- 当 Entry 被安全的复制后（具体怎么样才叫安全后面再细说），Leader 会把该 Entry 应用到自己的状态机。并返回结果给客户端。
+- Leader 会持续发送 AppendEntries PRCs 给服务器，直到回复。如果服务器宕机、网络丢包、运行慢，PRCs 会持续发。
+
+![](../../img/raft_log_entries.png)
+
+Log Entry
+- 日志是由一个个的 Entry 组成；每个 Entry 有下面几项组成：
+  1. Log Index，日志序号，顺序增加；
+  2. Command，客户端发来的命令，可以应用于状态机，改变状态值；
+  3. Term，当时的 Leader Term 值；
+- Commmitted Entries 已提交的日志项，意思是这些Entry可以安全地应用到状态机中了。
+- 只有当大于半数的 server 已经复制该Entry，该Entry才会被认为是 Commited
+- 日志匹配的性质（Log Matching Property）
+  - 如果两个日志的 index 和 term 值一样，那么存储的命令也一样。
+    - 这个性质由 Leader 创建 Entry 时指定。
+  - 如果两个日志的 index 和 term 值一样，那么之前所有的日志项也是一样的。
+    - 这个由 AppendEntries RPCs 去检查，每次都带上前一个日志项，贪心地校验即可。
+
+![](../../img/raft_inconsist_logs.png)
+
+日志不一致怎么办？
+- Leader 的日志和 Server 的日志可能不同，Figure 7 描述了一些常见的情况。
+  - a-b 少了一些日志项；c-d,e-f 可能有未提交的日志项；e-f 跟 Leader 有冲突。
 
 #### Safety 安全性
 
@@ -169,3 +226,9 @@ Follower 和 Candidate 宕机
 - 日志压缩用的快照技术（Snapshotting）
 
 Raft 核心代码就 2000+ 行，不包含注释、空行、测试代码。
+RPC
+- 服务器彼此通过 RPC(Remote Procedure Call) 调用来通信。
+- 共识算法（Consensus Algorithm）只有两种基本的 RPC 调用；
+  1. RequestVote RPC，由 Candidate 发出，请求投票。
+  2. AppendEntries RPCs，由 Leader 发出，请求复制日志项，以及心跳。
+
