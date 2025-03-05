@@ -232,5 +232,5 @@ RPC
 - 服务器彼此通过 RPC(Remote Procedure Call) 调用来通信。
 - 共识算法（Consensus Algorithm）只有两种基本的 RPC 调用；
   1. RequestVote RPC，由 Candidate 发出，请求投票。
-  2. AppendEntries RPCs，由 Leader 发出，请求复制日志项，以及心跳。
+  2. AppendEntries RPCs，由 Leader 发出，请求复制日志项，以及心跳。
 
