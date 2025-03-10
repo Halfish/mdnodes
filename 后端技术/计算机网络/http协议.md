@@ -23,3 +23,24 @@ HTTP 3.0
 - 基于 QUIC (Quick UDP Internet Connections) 协议，是基于 UDP 协议的。
 - 引入多路复用，内嵌 TLS 加密协议。
 - 智能拥塞控制算法。
+
+## 状态码
+
+状态码
+- 1xx 信息响应
+- 2xx 成功
+    - 200 成功
+- 3xx 重定向
+    - 301 Moved Permanently，永久重定向
+    - 302 Found, Moved Temporarily 临时重定向
+- 4xx 客户端错误
+    - ​400 Bad Request：请求格式错误（如参数错误）。
+    - ​401 Unauthorized：需要身份验证（如未携带有效Token）。
+    - ​403 Forbidden：服务器拒绝请求（已认证但无权限）。
+    - ​404 Not Found：请求的资源不存在。
+    - ​405 Method Not Allowed：请求方法不被允许（如用POST访问只支持GET的接口）。
+- 5xx 服务器错误
+    - 500 Internal Server Error：服务器内部错误（通用错误）。
+    - ​502 Bad Gateway：网关或代理服务器从上游收到无效响应。
+    - ​503 Service Unavailable：服务暂时不可用（如维护或过载）。
+    - ​504 Gateway Timeout：网关等待上游服务器响应超时。
