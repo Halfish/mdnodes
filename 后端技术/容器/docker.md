@@ -36,10 +36,38 @@ docker 常用的一些概念
 
 
 ## 3. 安装 docker
-参考：
-- http://wiki.baidu.com/pages/viewpage.action?pageId=418343555
-- http://docker.baidu.com/guide
 
+安装 docker：
+```bash
+sudo apt install docker.io
+```
+
+安装 docker compose
+```bash
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins
+URL=https://github.com/docker/compose/releases/download/v2.34.0/docker-compose-linux-x86_64
+
+# Download and install
+curl -SL $URL -o $DOCKER_CONFIG/cli-plugins/docker-compose
+
+# Add permission
+chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+# Test install
+docker compose version
+```
+
+把当前用户加到 docker 用户组，否则没有权限。
+```bash
+# 添加用户到 docker 组
+sudo usermod -aG docker $USER
+
+# 使组权限立即生效（需重新登录或重启终端）
+newgrp docker
+```
+
+一些初始化：
 ```
 # 1. 给 work 账户添加权限（否则只有 root 用户能用 docker 命令）
 groupadd docker    # 添加用户组
