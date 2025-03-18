@@ -234,3 +234,17 @@ RPC
   1. RequestVote RPC，由 Candidate 发出，请求投票。
   2. AppendEntries RPCs，由 Leader 发出，请求复制日志项，以及心跳。
 
+
+### ZooKeeper
+
+ZooKeeper 是一个分布式的，开放源码的分布式应用程序协调服务，是 Google 的 Chubby 一个开源的实现，是 Hadoop 和 Hbase 的重要组件。
+
+它是一个为分布式应用提供一致性服务的软件，比较典型的几个功能：
+- **Apache Kafka**：依赖 ZooKeeper 管理 Broker 元数据、Topic 配置和消费者偏移量。
+- **分布式锁服务**：如实现任务的全局唯一调度。
+
+Zookeeper 服务器内存中的数据模型由一系列被称为ZNode的数据节点组成，Zookeeper 将全量的数据存储在内存中，以此来提高服务器吞吐、减少延迟的目的。
+
+ZooKeeper 的 ​ZAB 协议​ 保证了分布式场景下的**强一致性**：
+- ​写请求：所有写操作必须由 Leader 处理，并通过两阶段提交（Propose + Commit）同步到多数节点。
+- ​读请求：默认读操作可能返回旧数据（因 Follower 有延迟），但可通过 sync 命令强制从 Leader 读取最新数据。
