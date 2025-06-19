@@ -76,7 +76,12 @@ git reset commit_id
 # 查看当前 commit 的修改历史
 git log
 # 美化版的日志
-git log --pretty=oneline
+git log --graph --oneline --all
+
+# 查看两个分支的区别
+git log --graph --oneline branch1 branch2
+# 更复杂的命令
+git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
 
 # 查看修改历史
 git reflog
