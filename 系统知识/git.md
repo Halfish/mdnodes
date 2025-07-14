@@ -12,7 +12,7 @@ SVN 也是一个版本控制系统，但是是集中式的，有中央服务器�
 初始化
 ```bash
 # 创建一个新的仓库，会在当前的目录下创建 .git/ 文件夹；
-git init 
+git init
 
 # 配置基本信息
 git config --list 查看配置的信息
@@ -106,7 +106,7 @@ git reflog
     - git branch --set-upstream-to=origin/dev dev # 本地 dev 和远程的 dev 要建立连接；
     - git pull  # 从远程拉取代码；
     - git pull = git fetch + git merge FETCH_HEAD
-    - git pull --rebase = git fetch + fet rebase FETCH_HEAD
+    - git pull --rebase = git fetch + git rebase FETCH_HEAD
 - rebase
     - git rebase；  # rebase操作可以把本地未push的分叉提交历史整理成直线；
     - git rebase 可能会因为冲突而中断
@@ -169,6 +169,53 @@ git push origin --delete origin/fix_02
 
 # 删除以后，同步列表（远程已删除的分支不会再显示，但是本地的还在）
 git fetch -p(--prune)
+```
+## remote（远程分支）
+
+```bash
+# 查看 remote 信息
+git remote -v(--verbose)
+
+# 查看远程的详细信息
+git remote show origin
+
+# 查看分支以及和远程的关系
+git branch -vv
+```
+
+## fetch （拉取远程分支）
+```bash
+# 拉取远程分支（下面两种写法等价）
+git fetch
+git fetch origin
+
+# 从所有的远程仓库拉取（如 origin，upstream）
+git fetch --all
+
+# 拉取某个分支
+git fetch origin main
+```
+
+## pull （等于 fetch + merge）
+```bash
+# 拉取远程分支，并合并到本地
+git pull origin main
+# 等价于
+git fetch origin main
+git merge origin/main
+
+# 拉取远程分支，并 rebase 到本地
+git pull --rebase origin main
+# 等价于
+git fetch origin main
+git rebase origin/main
+```
+
+## merge （合并）
+```bash
+# 将远程的开发分支合并到本地的main分支
+git checkout main
+git merge origin/feature
 ```
 
 ## stash（储藏）
