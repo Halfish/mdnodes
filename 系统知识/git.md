@@ -239,6 +239,15 @@ git stash clear
 # 查看 diff
 git stash show
 ```
+## submodule
+子模块
+```bash
+# 添加特定分支作为子模块
+git submodule add -b <分支名> <仓库URL> <目标路径>
+
+# 查看状态
+git submodule status
+```
 
 ## 其他问题
 
