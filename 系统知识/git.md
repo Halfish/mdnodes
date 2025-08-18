@@ -18,6 +18,9 @@ git init
 git config --list 查看配置的信息
 git config --user.email xiaobinzhang@pony.ai
 git config --user.name xiaobinzhang
+
+# 设置默认送的远程分支（直接git push就行
+git config --global push.default current
 ```
 
 ## 代码管理
