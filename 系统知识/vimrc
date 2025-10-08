@@ -53,6 +53,7 @@ set termencoding=utf-8
 set encoding=utf-8
 
 " 设置备份文件、交换文件、操作历史文件的保存位置（需要先创建文件夹）
+" cd ~/.vim/ && mkdir -p .backup .swap .undo && cd -
 set backupdir=~/.vim/.backup/
 set directory=~/.vim/.swap/
 set undodir=~/.vim/.undo/
@@ -64,15 +65,6 @@ set listchars=tab:>-,trail:~
 " 命令模式下的 Tab 自动补全（貌似不起作用）
 set wildmenu
 set wildmode=longest:list,full
-
-" 自动补全
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 
 " 重新打开文件时，记住上次编辑的位置
 if has("autocmd")
@@ -96,6 +88,7 @@ Plugin 'Yggdroot/indentLine'      " 显示代码缩进和对齐
 Plugin 'scrooloose/nerdtree'      " 目录树
 Plugin 'airblade/vim-gitgutter'   " 在 vim 中显示 git 修改记录
 Plugin 'jiangmiao/auto-pairs'     " 自动括号补全
+Plugin 'mhinz/vim-startify'       " 快速最近编辑过的文件
 "Plugin 'Valloric/YouCompleteMe'   " 代码补全
 "Plugin 'octol/vim-cpp-enhanced-highlight'   " 额外提供C++11/14/17，标准库，boost库的语法高亮
 
@@ -103,15 +96,17 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 " end of Vundle 插件
 
-" for lightline
+""""""""""""""""""""""""Plugin lightline""""""""""""""""""""""""
 if !has('gui_running')
   set t_Co=256
 endif
+""""""""""""""""""""""""Plugin lightline""""""""""""""""""""""""
 
-" Plugin for vim-cpp-enhanced-highlight
+""""""""""""""""""""""""Plugin vim-cpp-enhanced-highlight""""""""""""""""""""""""
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_scope_highlight = 1
 let g:cpp_class_decl_highlight = 1
+""""""""""""""""""""""""Plugin vim-cpp-enhanced-highlight""""""""""""""""""""""""
 
 
 """"""""""""""""""""""""Plugin YouCompleteMe""""""""""""""""""""""""
@@ -150,9 +145,9 @@ let g:ycm_seed_identifiers_with_syntax=1
 " 打开 NERDTree 快捷键，Ctrl + n
 nnoremap <C-n> :NERDTreeToggle<CR>
 " 设置NERDTree子窗口宽度
-let NERDTreeWinSize=32
+let NERDTreeWinSize=48
 " 设置NERDTree子窗口位置
-let NERDTreeWinPos="right"
+let NERDTreeWinPos="left"
 " 显示隐藏文件
 let NERDTreeShowHidden=1
 " NERDTree 子窗口中不显示冗余帮助信息

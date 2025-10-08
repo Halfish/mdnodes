@@ -285,3 +285,7 @@ Host github.com
 
 - 将 `<proxy_address>` 替换为 SOCKS 代理地址（例如 127.0.0.1）。
 - 将 `<proxy_port>` 替换为代理端口（例如 1080）。
+
+### lazygit
+在命令行运行 git UI，参考 [lazygit](https://github.com/jesseduffield/lazygit).
+
