@@ -329,3 +329,38 @@ import common 和 __import__('commom') 的功能是一样的，但是后者是�
 - `__dir__()`：调动 dir(obj) 时，会调用该函数，返回所有属性名和方法名；
 - `__dict__()`：类的内部词典；
 - `__slots__`: 用于限制类的实例的属性
+
+## 4. 工具链
+
+### 4.1 ruff
+
+在 Astral 之前，python 项目用的工具链：
+- flake8 (linting)
+- isort (import sorting)
+- black (formatting)
+- pylint (static analysis)
+- pip (package management)
+
+Astral 之后
+- Ruff (linting + formatting + import sorting)
+- uv (package management)
+
+Ruff 的用法（主要是 check / format)
+
+```bash
+# 安装 ruff
+pip install ruff
+
+# 检查代码
+ruff check .
+
+# 检查并自动修复
+ruff check --fix .
+
+# 检查特定文件
+ruff check src/main.py
+
+# 格式化代码（需要启用格式化功能）
+ruff format .
+```
+
