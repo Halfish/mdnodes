@@ -259,6 +259,11 @@ from packageA import *
 
 同样，在普通 `.py` 文件里的 `__all__` 变量，也是 `import *` 会参考此变量，否则会把所有不以 `_` 开头的成员都 `import` 进去
 
+当 python 中查找一个 module（即 import xx），
+- 首先会查找 builtin 的模块，是解释器自带的
+- 接着会去 sys.modules 中找是否已经引入的缓存
+- 然后按照 sys.path 中的路径顺序，逐个查找
+
 ### 3.3 可迭代对象和迭代器
 
 *可迭代对象*
